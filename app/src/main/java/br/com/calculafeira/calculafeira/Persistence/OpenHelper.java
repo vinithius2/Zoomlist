@@ -13,7 +13,6 @@ import java.util.List;
 import br.com.calculafeira.calculafeira.DAO.CategoriaDAO;
 import br.com.calculafeira.calculafeira.DAO.DadosProdutoDAO;
 import br.com.calculafeira.calculafeira.DAO.ProdutoDAO;
-//import br.com.calculafeira.calculafeira.Service.AsyncTaskCategoria;
 
 /**
  * Created by DPGE on 22/06/2017.
@@ -68,9 +67,7 @@ public class OpenHelper extends SQLiteOpenHelper {
         return REGISTROS_TRANSACAO;
     }
 
-    // Inicializar as Tabelas.
     private void InicializarVariaveis() {
-        // Tabelas Banco
         DATABASE_TABLES = new String[]{
                 CategoriaDAO.TABELA,
                 ProdutoDAO.TABELA,
@@ -97,16 +94,8 @@ public class OpenHelper extends SQLiteOpenHelper {
         for (String aDATABASE_CREATE : DATABASE_CREATE) {
             db.execSQL(aDATABASE_CREATE);
         }
-        //db.execSQL(insertUsuario());
-        //insertCategoria(db);
     }
-    /*
-    private void insertCategoria(SQLiteDatabase db) {
-        if (chaveCategoria) {
-            //sqlBrasil(db);
-        }
-    }
-    */
+
     private void apagaTabela(SQLiteDatabase db, String tabela) {
         db.execSQL(String.format("DROP TABLE IF EXISTS %s", tabela));
         Log.i(OpenHelper.class.getName(), "DROP TABLE IF EXISTS %s" + tabela);
