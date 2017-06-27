@@ -134,7 +134,7 @@ public class ProductDataDAO {
         return database.query(TABLE, colunas, null, null, null, null, null, null);
     }
 
-    public ArrayList<ProductData> getListCategorys() {
+    public ArrayList<ProductData> getListProductDatas() {
         Cursor c;
         try {
             c = getCursor();

@@ -2,6 +2,8 @@ package br.com.calculafeira.calculafeira.Model;
 
 import java.util.Date;
 
+import br.com.calculafeira.calculafeira.Persistence.DataManager;
+
 /**
  * Created by DPGE on 22/06/2017.
  */
@@ -67,6 +69,7 @@ public class ProductData {
 
     @Override
     public String toString() {
-        return String.valueOf(quantity * price);
+        Product product = DataManager.getInstance().getProductDAO().getIdProduct(getFkProduct());
+        return String.valueOf("Nome produto: " + product.getNameProduct().toString() + " (R$ " + price + ")");
     }
 }

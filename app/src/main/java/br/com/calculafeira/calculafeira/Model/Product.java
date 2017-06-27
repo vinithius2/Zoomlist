@@ -1,5 +1,7 @@
 package br.com.calculafeira.calculafeira.Model;
 
+import br.com.calculafeira.calculafeira.Persistence.DataManager;
+
 /**
  * Created by DPGE on 22/06/2017.
  */

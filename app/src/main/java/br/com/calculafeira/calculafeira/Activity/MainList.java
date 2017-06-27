@@ -1,7 +1,7 @@
 package br.com.calculafeira.calculafeira.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,10 +21,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
+
+import br.com.calculafeira.calculafeira.Adapter.AdapterProductData;
+import br.com.calculafeira.calculafeira.Model.Product;
+import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
 
-public class main_list extends AppCompatActivity implements AbsListView.OnScrollListener {
+public class MainList extends AppCompatActivity implements AbsListView.OnScrollListener {
 
     final static String[] DUMMY_DATA = {
             "France",
@@ -49,6 +54,7 @@ public class main_list extends AppCompatActivity implements AbsListView.OnScroll
     View mContainerHeader;
     FloatingActionButton fab;
     ObjectAnimator fade;
+    private ArrayAdapter<ProductData> productDataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +87,25 @@ public class main_list extends AppCompatActivity implements AbsListView.OnScroll
         fade.setDuration(400);
 
         listView.setOnScrollListener(this);
-        listView.setAdapter(new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1,
-                DUMMY_DATA));
+        ArrayList<Product> products = DataManager.getInstance().getProductDAO().getListProducts();
+        if (products != null){
+            productDataAdapter = new AdapterProductData(this, R.layout.adapter_product_data,  DataManager.getInstance().getProductDataDAO().getListProductDatas());
+            listView.setAdapter(productDataAdapter);
+            productDataAdapter.notifyDataSetChanged();
+        } else {
+            listView.setAdapter(new ArrayAdapter<>(this,
+                    android.R.layout.simple_list_item_1,
+                    DUMMY_DATA));
+        }
 
         fab = (FloatingActionButton) findViewById(R.id.add_product);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainList.this, CreateProduct.class);
+                startActivity(intent);
+                //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                //        .setAction("Action", null).show();
             }
         });
     }
