@@ -6,9 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v4.app.NotificationCompat;
 
-import br.com.calculafeira.calculafeira.DAO.CategoriaDAO;
-import br.com.calculafeira.calculafeira.DAO.DadosProdutoDAO;
-import br.com.calculafeira.calculafeira.DAO.ProdutoDAO;
+import br.com.calculafeira.calculafeira.DAO.CategoryDAO;
+import br.com.calculafeira.calculafeira.DAO.ProductDataDAO;
+import br.com.calculafeira.calculafeira.DAO.ProductDAO;
 
 /**
  * Created by DPGE on 22/06/2017.
@@ -22,9 +22,9 @@ public class DataManager {
     private NotificationManager mNotifyManager;
     private NotificationCompat.Builder mBuilder;
     // --- DAOs --- //
-    private CategoriaDAO categoriaDAO;
-    private DadosProdutoDAO dadosProdutoDAO;
-    private ProdutoDAO produtoDAO;
+    private CategoryDAO categoriaDAO;
+    private ProductDataDAO dadosProductDAO;
+    private ProductDAO produtoDAO;
 
 
     public DataManager(Context contx) {
@@ -33,13 +33,12 @@ public class DataManager {
         SQLiteOpenHelper openHelper = new OpenHelper(context);
         setDatabase(openHelper);
 
-        categoriaDAO = new CategoriaDAO(getDatabase(), context);
-        dadosProdutoDAO = new DadosProdutoDAO(getDatabase(), context);
-        produtoDAO = new ProdutoDAO(getDatabase(), context);
+        categoriaDAO = new CategoryDAO(getDatabase(), context);
+        dadosProductDAO = new ProductDataDAO(getDatabase(), context);
+        produtoDAO = new ProductDAO(getDatabase(), context);
 
     }
 
-    // Singleton
     public static DataManager getInstance(Context context) throws Exception {
         if (instance == null) {
             instance = new DataManager(context);
@@ -69,15 +68,15 @@ public class DataManager {
         }
     }
 
-    public CategoriaDAO getCategoriaDAO() {
+    public CategoryDAO getCategoryDAO() {
         return categoriaDAO;
     }
 
-    public DadosProdutoDAO getDadosProdutoDAO() {
-        return dadosProdutoDAO;
+    public ProductDataDAO getProductDataDAO() {
+        return dadosProductDAO;
     }
 
-    public ProdutoDAO getProdutoDAO() {
+    public ProductDAO getProductDAO() {
         return produtoDAO;
     }
 }

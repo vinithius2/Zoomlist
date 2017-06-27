@@ -10,9 +10,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.calculafeira.calculafeira.DAO.CategoriaDAO;
-import br.com.calculafeira.calculafeira.DAO.DadosProdutoDAO;
-import br.com.calculafeira.calculafeira.DAO.ProdutoDAO;
+import br.com.calculafeira.calculafeira.DAO.CategoryDAO;
+import br.com.calculafeira.calculafeira.DAO.ProductDataDAO;
+import br.com.calculafeira.calculafeira.DAO.ProductDAO;
 
 /**
  * Created by DPGE on 22/06/2017.
@@ -25,10 +25,10 @@ public class OpenHelper extends SQLiteOpenHelper {
     private static final int MAX_REGISTROS_TRANSACAO = 10; // máximo de
     private static int REGISTROS_TRANSACAO;
     private static String[] DATABASE_TABLES;
-    private static String[] DATABASE_TABELAS_REMOVIDAS = {};
+    private static String[] DATABASE_TABLES_REMOVIDAS = {};
     private static String[] DATABASE_CREATE;
     private final String sufixoTabelaTemp = "_TEMP";
-    private boolean chaveCategoria = true;
+    private boolean chaveCategory = true;
     private Context context;
 
     public OpenHelper(Context context) {
@@ -69,25 +69,25 @@ public class OpenHelper extends SQLiteOpenHelper {
 
     private void InicializarVariaveis() {
         DATABASE_TABLES = new String[]{
-                CategoriaDAO.TABELA,
-                ProdutoDAO.TABELA,
-                DadosProdutoDAO.TABELA,
+                CategoryDAO.TABLE,
+                ProductDAO.TABLE,
+                ProductDataDAO.TABLE,
 
         };
 
         DATABASE_CREATE = new String[]{
-                createTableCategoria(),
-                createTableProduto(),
-                createTableDadosProduto(),
+                createTableCategory(),
+                createTableProduct(),
+                createTableProductData(),
         };
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i(OpenHelper.class.getName(), "Criando banco de dados " + DATABASE_NAME);
-        Log.i("DB", "onCreate - Chave: " + chaveCategoria);
+        Log.i("DB", "onCreate - Chave: " + chaveCategory);
         // apaga as tabelas que forma removidas do banco
-        for (String tabelaRemovida : DATABASE_TABELAS_REMOVIDAS) {
+        for (String tabelaRemovida : DATABASE_TABLES_REMOVIDAS) {
             apagaTabela(db, tabelaRemovida);
         }
         // cria as tabelas
@@ -181,7 +181,7 @@ public class OpenHelper extends SQLiteOpenHelper {
 
     private String[] getValoresCursor(int[] indices,
                                       Cursor cursorDadosTabelaTemp, Cursor cursorTabelaNova) {
-        List<String> valoresTemp = new ArrayList<String>(); // Lista de String
+        List<String> valoresTemp = new ArrayList<String>(); // List de String
 
 
         for (int indice : indices) {
@@ -223,10 +223,10 @@ public class OpenHelper extends SQLiteOpenHelper {
     }
 
     private int[] getIndicesColunas(Cursor cursorSelect) {
-        String[] nomeColunas = cursorSelect.getColumnNames();
-        int[] indices = new int[nomeColunas.length];
+        String[] nameColunas = cursorSelect.getColumnNames();
+        int[] indices = new int[nameColunas.length];
         for (int i = 0; i < indices.length; i++) {
-            indices[i] = cursorSelect.getColumnIndex(nomeColunas[i]);
+            indices[i] = cursorSelect.getColumnIndex(nameColunas[i]);
         }
         return indices;
     }
@@ -254,37 +254,37 @@ public class OpenHelper extends SQLiteOpenHelper {
         return tabelaExiste;
     }
 
-    private String createTableCategoria() {
-        Log.i(OpenHelper.class.getName(), "Criando tabela: " + CategoriaDAO.TABELA);
-        String CREATE_TABLE_CATEGORIA = "CREATE TABLE IF NOT EXISTS " + CategoriaDAO.TABELA + "("
-                + CategoriaDAO._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + CategoriaDAO.NOME_CATEGORIA + " TEXT NOT NULL"
+    private String createTableCategory() {
+        Log.i(OpenHelper.class.getName(), "Criando tabela: " + CategoryDAO.TABLE);
+        String CREATE_TABLE_CATEGORIA = "CREATE TABLE IF NOT EXISTS " + CategoryDAO.TABLE + "("
+                + CategoryDAO._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + CategoryDAO.CATEGORY_NAME + " TEXT NOT NULL"
                 + ")";
         Log.i("CREATE TABLE", CREATE_TABLE_CATEGORIA);
         return CREATE_TABLE_CATEGORIA;
     }
 
-    private String createTableProduto() {
-        Log.i(OpenHelper.class.getName(), "Criando tabela: " + ProdutoDAO.TABELA);
-        String CREATE_TABLE_PRODUTO = "CREATE TABLE IF NOT EXISTS " + ProdutoDAO.TABELA + "("
-                + ProdutoDAO._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + ProdutoDAO.NOME_PRODUTO + " TEXT NOT NULL,"
-                + ProdutoDAO.FK_CATEGORIA + " INTEGER NOT NULL,"
-                + "FOREIGN KEY(" + ProdutoDAO.FK_CATEGORIA + ") REFERENCES " + CategoriaDAO.TABELA + "(" + CategoriaDAO._ID + ") ON DELETE CASCADE"
+    private String createTableProduct() {
+        Log.i(OpenHelper.class.getName(), "Criando tabela: " + ProductDAO.TABLE);
+        String CREATE_TABLE_PRODUTO = "CREATE TABLE IF NOT EXISTS " + ProductDAO.TABLE + "("
+                + ProductDAO._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + ProductDAO.PRODUCT_NAME + " TEXT NOT NULL,"
+                + ProductDAO.FK_CATEGORY + " INTEGER NOT NULL,"
+                + "FOREIGN KEY(" + ProductDAO.FK_CATEGORY + ") REFERENCES " + CategoryDAO.TABLE + "(" + CategoryDAO._ID + ") ON DELETE CASCADE"
                 + ")";
         Log.i("CREATE TABLE", CREATE_TABLE_PRODUTO);
         return CREATE_TABLE_PRODUTO;
     }
 
-    private String createTableDadosProduto() {
-        Log.i(OpenHelper.class.getName(), "Criando tabela: " + DadosProdutoDAO.TABELA);
-        String CREATE_TABLE_DADOS_PRODUTO = "CREATE TABLE IF NOT EXISTS " + DadosProdutoDAO.TABELA + "("
-                + DadosProdutoDAO._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + DadosProdutoDAO.DATA_AQUISICAO + " TEXT NOT NULL,"
-                + DadosProdutoDAO.PRECO + " REAL NOT NULL,"
-                + DadosProdutoDAO.QUANTIDADE + " INTEGER NOT NULL,"
-                + DadosProdutoDAO.FK_PRODUTO + " INTEGER NOT NULL,"
-                + "FOREIGN KEY(" + DadosProdutoDAO.FK_PRODUTO + ") REFERENCES " + ProdutoDAO.TABELA + "(" + ProdutoDAO._ID + ") ON DELETE CASCADE"
+    private String createTableProductData() {
+        Log.i(OpenHelper.class.getName(), "Criando tabela: " + ProductDataDAO.TABLE);
+        String CREATE_TABLE_DADOS_PRODUTO = "CREATE TABLE IF NOT EXISTS " + ProductDataDAO.TABLE + "("
+                + ProductDataDAO._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + ProductDataDAO.PURCHASE_DATE + " TEXT NOT NULL,"
+                + ProductDataDAO.PRICE + " REAL NOT NULL,"
+                + ProductDataDAO.QUANTITY + " INTEGER NOT NULL,"
+                + ProductDataDAO.FK_PRODUCT + " INTEGER NOT NULL,"
+                + "FOREIGN KEY(" + ProductDataDAO.FK_PRODUCT + ") REFERENCES " + ProductDAO.TABLE + "(" + ProductDAO._ID + ") ON DELETE CASCADE"
                 + ")";
                 Log.i("CREATE TABLE", CREATE_TABLE_DADOS_PRODUTO);
         return CREATE_TABLE_DADOS_PRODUTO;
