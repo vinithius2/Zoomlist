@@ -19,8 +19,11 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import br.com.calculafeira.calculafeira.Adapter.AdapterProductData;
@@ -28,47 +31,56 @@ import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
+import br.com.calculafeira.calculafeira.Util.Mask;
 
 public class MainList extends AppCompatActivity implements AbsListView.OnScrollListener {
 
-    final static String[] DUMMY_DATA = {
-            "France",
-            "Sweden",
-            "Germany",
-            "USA",
-            "Portugal",
-            "The Netherlands",
-            "Belgium",
-            "Spain",
-            "United Kingdom",
-            "Mexico",
-            "Finland",
-            "Norway",
-            "Italy",
-            "Ireland",
-            "Brazil",
-            "Japan"
-    };
+//    final static String[] DUMMY_DATA = {
+//            "France",
+//            "Sweden",
+//            "Germany",
+//            "USA",
+//            "Portugal",
+//            "The Netherlands",
+//            "Belgium",
+//            "Spain",
+//            "United Kingdom",
+//            "Mexico",
+//            "Finland",
+//            "Norway",
+//            "Italy",
+//            "Ireland",
+//            "Brazil",
+//            "Japan"
+//    };
 
     Toolbar mToolbar;
     View mContainerHeader;
     FloatingActionButton fab;
     ObjectAnimator fade;
+    TextView totalPrice, totalQuantity;
+    DecimalFormat maskMoney;
     private ArrayAdapter<ProductData> productDataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_list);
-
-        mToolbar = (Toolbar)findViewById(R.id.toolbar);
-        ListView listView = (ListView)findViewById(R.id.listview);
-
         try {
             DataManager.getInstance(this);
         } catch (Exception e) {
             Log.e("ERRO",e.getMessage());
         }
+
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        ListView listView = (ListView)findViewById(R.id.listview);
+
+//        totalPrice = (TextView)findViewById(R.id.textView_total_price);
+//        totalQuantity = (TextView)findViewById(R.id.textView_total_quantity);
+//        maskMoney = new DecimalFormat("R$ 0.00");
+//        totalPrice.setText(maskMoney.format(DataManager.getInstance().getProductDataDAO().getTotalPrice()));
+//        totalQuantity.setText(DataManager.getInstance().getProductDataDAO().getCount());
+
 
         if (mToolbar != null) {
             mToolbar.setTitle(getString(R.string.value_default));
@@ -89,13 +101,13 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         listView.setOnScrollListener(this);
         ArrayList<Product> products = DataManager.getInstance().getProductDAO().getListProducts();
         if (products != null){
-            productDataAdapter = new AdapterProductData(this, R.layout.adapter_product_data,  DataManager.getInstance().getProductDataDAO().getListProductDatas());
+            productDataAdapter = new AdapterProductData(this, R.layout.adapter_product_data,  DataManager.getInstance().getProductDataDAO().getListProductDatas(), totalPrice, totalQuantity);
             listView.setAdapter(productDataAdapter);
             productDataAdapter.notifyDataSetChanged();
         } else {
-            listView.setAdapter(new ArrayAdapter<>(this,
-                    android.R.layout.simple_list_item_1,
-                    DUMMY_DATA));
+//            listView.setAdapter(new ArrayAdapter<>(this,
+//                    android.R.layout.simple_list_item_1,
+//                    DUMMY_DATA));
         }
 
         fab = (FloatingActionButton) findViewById(R.id.add_product);

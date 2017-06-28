@@ -70,6 +70,6 @@ public class ProductData {
     @Override
     public String toString() {
         Product product = DataManager.getInstance().getProductDAO().getIdProduct(getFkProduct());
-        return String.valueOf("Nome produto: " + product.getNameProduct().toString() + " (R$ " + price + ")");
+        return String.valueOf(product.getNameProduct().toString());
     }
 }

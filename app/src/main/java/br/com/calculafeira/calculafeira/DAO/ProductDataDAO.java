@@ -161,5 +161,14 @@ public class ProductDataDAO {
         }
         return productDatas;
     }
+    
+    public Double getTotalPrice(){
+        ArrayList<ProductData> productDatas = getListProductDatas();
+        Double totalPrice = Double.parseDouble("0");
+        for (ProductData product : productDatas) {
+            totalPrice =+ product.getPrice();
+        }
+        return totalPrice;
+    }
 
 }

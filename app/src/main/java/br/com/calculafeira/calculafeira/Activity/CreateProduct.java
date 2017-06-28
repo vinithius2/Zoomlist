@@ -1,5 +1,6 @@
 package br.com.calculafeira.calculafeira.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.R;
+import br.com.calculafeira.calculafeira.Util.Mask;
 
 public class CreateProduct extends AppCompatActivity {
 
@@ -31,12 +33,12 @@ public class CreateProduct extends AppCompatActivity {
 
         nameProduct = (EditText)findViewById(R.id.edit_text_name_product);
         priceProduct = (EditText)findViewById(R.id.edit_text_price_product);
+        priceProduct.addTextChangedListener(Mask.insert("#.##", priceProduct));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
 
                 ProductData productData = new ProductData();
                 Product product = new Product();
@@ -55,8 +57,8 @@ public class CreateProduct extends AppCompatActivity {
                 productData.setPurchaseDate(Long.valueOf(new SimpleDateFormat("yyyyMMdd").format(Calendar.getInstance().getTime())));
                 long id_product_data = DataManager.getInstance().getProductDataDAO().save(productData);
 
-                Snackbar.make(view, product.toString() + " " + productData.toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(CreateProduct.this, MainList.class);
+                startActivity(intent);
             }
         });
     }

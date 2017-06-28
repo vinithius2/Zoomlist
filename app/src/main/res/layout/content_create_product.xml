@@ -22,7 +22,7 @@
 
             <TextView
                 android:id="@+id/text_view_name_product"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/name_product" />
 
@@ -34,7 +34,7 @@
 
             <EditText
                 android:id="@+id/edit_text_name_product"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName" />
@@ -59,7 +59,7 @@
 
             <EditText
                 android:id="@+id/edit_text_price_product"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="numberDecimal" />

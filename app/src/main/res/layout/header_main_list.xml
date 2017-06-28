@@ -15,6 +15,7 @@
         android:paddingBottom="40dp" >
 
         <TextView
+            android:id="@+id/textView_total_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
@@ -23,6 +24,7 @@
             android:text="@string/value_default"/>
 
         <TextView
+            android:id="@+id/textView_total_quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

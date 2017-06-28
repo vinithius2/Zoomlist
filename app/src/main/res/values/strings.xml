@@ -6,4 +6,6 @@
     <string name="title_activity_create_product">CreateProduct</string>
     <string name="name_product">Nome do produto</string>
     <string name="price_product">Preço</string>
+    <string name="mais">+</string>
+    <string name="menos">-</string>
 </resources>
