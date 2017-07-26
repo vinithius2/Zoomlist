@@ -10,15 +10,24 @@ public class Product {
 
     private Long idProduct;
     private String nameProduct;
-    private Long fkCategory;
+    private String nameCategory;
 
     public Product() {
     }
 
-    public Product(Long idProduct, String nameProduct, Long fkCategory) {
+    public Product(Long idProduct, String nameProduct, String nameCategory) {
+
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
-        this.fkCategory = fkCategory;
+        this.nameCategory = nameCategory;
+    }
+
+    public String getNameCategory() {
+        return nameCategory;
+    }
+
+    public void setNameCategory(String nameCategory) {
+        this.nameCategory = nameCategory;
     }
 
     public Long getIdProduct() {
@@ -35,14 +44,6 @@ public class Product {
 
     public void setNameProduct(String nameProduct) {
         this.nameProduct = nameProduct;
-    }
-
-    public Long getFkCategory() {
-        return fkCategory;
-    }
-
-    public void setFkCategory(Long fkCategory) {
-        this.fkCategory = fkCategory;
     }
 
     @Override

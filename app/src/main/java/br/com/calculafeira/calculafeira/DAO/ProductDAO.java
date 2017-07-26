@@ -20,8 +20,8 @@ public class ProductDAO {
     public static final String TABLE = "PRODUTO";
     public static final String _ID = "_ID";
     public static final String PRODUCT_NAME = "PRODUCT_NAME";
-    public static final String FK_CATEGORY = "FK_CATEGORY";
-
+    public static final String CATEGORY_NAME = "CATEGORY_NAME";
+    
     private final SQLiteDatabase database;
     private final Context context;
 
@@ -43,7 +43,7 @@ public class ProductDAO {
     private Long insert(Product product) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PRODUCT_NAME, product.getNameProduct());
-        contentValues.put(FK_CATEGORY, product.getFkCategory());
+        contentValues.put(CATEGORY_NAME, product.getNameCategory());
         Long id = insert(contentValues);
         return id;
     }
@@ -56,7 +56,7 @@ public class ProductDAO {
     private int update(Product product) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PRODUCT_NAME, product.getNameProduct());
-        contentValues.put(FK_CATEGORY, product.getFkCategory());
+        contentValues.put(CATEGORY_NAME, product.getNameCategory());
         String _id = String.valueOf(product.getIdProduct());
         String where = _ID + "=?";
         String[] whereArgs = new String[]{_id};
@@ -109,18 +109,18 @@ public class ProductDAO {
         if (c.moveToFirst()) {
             int idxId = c.getColumnIndex(_ID);
             int idxNameProduct = c.getColumnIndex(PRODUCT_NAME);
-            int idxFkCategory = c.getColumnIndex(FK_CATEGORY);
+            int idxNameCategory = c.getColumnIndex(CATEGORY_NAME);
             do {
                 product.setIdProduct(c.getLong(idxId));
                 product.setNameProduct(c.getString(idxNameProduct));
-                product.setFkCategory(c.getLong(idxFkCategory));
+                product.setNameCategory(c.getString(idxNameCategory));
             } while (c.moveToNext());
         }
         return product;
     }
 
     private Cursor getCursor() throws SQLException {
-        String[] colunas = new String[]{_ID, PRODUCT_NAME, FK_CATEGORY};
+        String[] colunas = new String[]{_ID, PRODUCT_NAME, CATEGORY_NAME};
         return database.query(TABLE, colunas, null, null, null, null, null, null);
     }
 
@@ -136,12 +136,12 @@ public class ProductDAO {
         if (c.moveToFirst()) {
             int idxId = c.getColumnIndex(_ID);
             int idxNameProduct = c.getColumnIndex(PRODUCT_NAME);
-            int idxFkCategory = c.getColumnIndex(FK_CATEGORY);
+            int idxNameCategory = c.getColumnIndex(CATEGORY_NAME);
             do {
                 Product product = new Product();
                 product.setIdProduct(c.getLong(idxId));
                 product.setNameProduct(c.getString(idxNameProduct));
-                product.setFkCategory(c.getLong(idxFkCategory));
+                product.setNameCategory(c.getString(idxNameCategory));
                 products.add(product);
             } while (c.moveToNext());
         }

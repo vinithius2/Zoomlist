@@ -1,6 +1,11 @@
 package br.com.calculafeira.calculafeira.Model;
 
+import android.util.Log;
+
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 
@@ -12,14 +17,14 @@ public class ProductData {
 
     private Long idProductData;
     private Long fkProduct;
-    private Long purchaseDate;
+    private Date purchaseDate;
     private Integer quantity;
     private Double price;
 
     public ProductData() {
     }
 
-    public ProductData(Long idProductData, Long fkProduct, Long purchaseDate, Integer quantity, Double price) {
+    public ProductData(Long idProductData, Long fkProduct, Date purchaseDate, Integer quantity, Double price) {
         this.idProductData = idProductData;
         this.fkProduct = fkProduct;
         this.purchaseDate = purchaseDate;
@@ -43,12 +48,23 @@ public class ProductData {
         this.fkProduct = fkProduct;
     }
 
-    public Long getPurchaseDate() {
+    public Date getPurchaseDate() {
         return purchaseDate;
     }
 
-    public void setPurchaseDate(Long purchaseDate) {
-        this.purchaseDate = purchaseDate;
+    public String getPurchaseDateString() {
+        return new SimpleDateFormat("dd/MM/yyyy").format(purchaseDate);
+    }
+
+    public void setPurchaseDate(String purchaseDate) {
+        Date parsedDate = null;
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", new Locale("pt", "BR"));
+            parsedDate = dateFormat.parse(purchaseDate);
+        }catch(Exception e){
+            Log.e("Erro ProductData", e.getMessage());
+        }
+        this.purchaseDate = parsedDate;
     }
 
     public Integer getQuantity() {

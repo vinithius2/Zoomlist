@@ -8,4 +8,5 @@
     <string name="price_product">Preço</string>
     <string name="mais">+</string>
     <string name="menos">-</string>
+    <string name="title_activity_product_create">ProductCreate</string>
 </resources>

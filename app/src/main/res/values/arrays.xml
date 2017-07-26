@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string-array name="categories">
+        <item>Alimento</item>
+        <item>Bebida</item>
+        <item>Limpeza</item>
+        <item>Higiene</item>
+    </string-array>
+</resources>

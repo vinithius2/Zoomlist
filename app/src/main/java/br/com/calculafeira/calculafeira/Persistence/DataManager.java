@@ -6,7 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v4.app.NotificationCompat;
 
-import br.com.calculafeira.calculafeira.DAO.CategoryDAO;
 import br.com.calculafeira.calculafeira.DAO.ProductDataDAO;
 import br.com.calculafeira.calculafeira.DAO.ProductDAO;
 
@@ -22,7 +21,6 @@ public class DataManager {
     private NotificationManager mNotifyManager;
     private NotificationCompat.Builder mBuilder;
     // --- DAOs --- //
-    private CategoryDAO categoriaDAO;
     private ProductDataDAO dadosProductDAO;
     private ProductDAO produtoDAO;
 
@@ -33,7 +31,6 @@ public class DataManager {
         SQLiteOpenHelper openHelper = new OpenHelper(context);
         setDatabase(openHelper);
 
-        categoriaDAO = new CategoryDAO(getDatabase(), context);
         dadosProductDAO = new ProductDataDAO(getDatabase(), context);
         produtoDAO = new ProductDAO(getDatabase(), context);
 
@@ -66,10 +63,6 @@ public class DataManager {
         if (getDatabase().isOpen()) {
             getDatabase().close();
         }
-    }
-
-    public CategoryDAO getCategoryDAO() {
-        return categoriaDAO;
     }
 
     public ProductDataDAO getProductDataDAO() {

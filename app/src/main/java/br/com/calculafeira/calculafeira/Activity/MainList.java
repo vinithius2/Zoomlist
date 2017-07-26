@@ -114,7 +114,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainList.this, CreateProduct.class);
+                Intent intent = new Intent(MainList.this, ProductCreate.class);
                 startActivity(intent);
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //        .setAction("Action", null).show();

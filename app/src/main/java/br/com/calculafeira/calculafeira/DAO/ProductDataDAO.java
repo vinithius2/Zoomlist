@@ -45,7 +45,7 @@ public class ProductDataDAO {
     private Long insert(ProductData productData) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FK_PRODUCT, productData.getFkProduct());
-        contentValues.put(PURCHASE_DATE, String.valueOf(productData.getPurchaseDate()));
+        //contentValues.put(PURCHASE_DATE, String.valueOf(productData.getPurchaseDate()));
         contentValues.put(QUANTITY, productData.getQuantity());
         contentValues.put(PRICE, productData.getPrice());
         Long id = insert(contentValues);
@@ -60,7 +60,7 @@ public class ProductDataDAO {
     private int update(ProductData productData) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(FK_PRODUCT, productData.getFkProduct());
-        contentValues.put(PURCHASE_DATE, String.valueOf(productData.getPurchaseDate()));
+        //contentValues.put(PURCHASE_DATE, String.valueOf(productData.getPurchaseDate()));
         contentValues.put(QUANTITY, productData.getQuantity());
         contentValues.put(PRICE, productData.getPrice());
         String _id = String.valueOf(productData.getIdProductData());
@@ -121,7 +121,7 @@ public class ProductDataDAO {
             do {
                 productData.setIdProductData(c.getLong(idxId));
                 productData.setFkProduct(c.getLong(idxFkProduct));
-                productData.setPurchaseDate(Long.parseLong(String.valueOf(idxPurchaseDate)));
+                productData.setPurchaseDate(c.getString(idxPurchaseDate));
                 productData.setQuantity(c.getInt(idxQuantity));
                 productData.setPrice(c.getDouble(idxPrice));
             } while (c.moveToNext());
@@ -153,7 +153,7 @@ public class ProductDataDAO {
                 ProductData productData = new ProductData();
                 productData.setIdProductData(c.getLong(idxId));
                 productData.setFkProduct(c.getLong(idxFkProduct));
-                productData.setPurchaseDate(Long.parseLong(String.valueOf(idxPurchaseDate)));
+                productData.setPurchaseDate(c.getString(idxPurchaseDate));
                 productData.setQuantity(c.getInt(idxQuantity));
                 productData.setPrice(c.getDouble(idxPrice));
                 productDatas.add(productData);
