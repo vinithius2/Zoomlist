@@ -44,6 +44,11 @@ public class ProductData {
         return fkProduct;
     }
 
+    public Product getProduct() {
+        Product product = DataManager.getInstance().getProductDAO().getIdProduct(getFkProduct());
+        return product;
+    }
+
     public void setFkProduct(Long fkProduct) {
         this.fkProduct = fkProduct;
     }

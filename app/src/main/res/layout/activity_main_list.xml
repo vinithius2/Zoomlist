@@ -18,6 +18,9 @@
 
     <ListView
         android:id="@+id/listview"
+        android:longClickable="true"
+        android:clickable="true"
+        android:descendantFocusability="blocksDescendants"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

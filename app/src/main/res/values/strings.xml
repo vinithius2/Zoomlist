@@ -9,4 +9,11 @@
     <string name="mais">+</string>
     <string name="menos">-</string>
     <string name="title_activity_product_create">ProductCreate</string>
+    <string name="total_value">Valor Total:</string>
+    <string name="unit_value">Valor Unidade:</string>
+    <string name="delete">Deletar lista</string>
+    <string name="Ok" />
+    <string name="Cancelar" />
+    <string name="no">Não</string>
+    <string name="yes">Sim</string>
 </resources>

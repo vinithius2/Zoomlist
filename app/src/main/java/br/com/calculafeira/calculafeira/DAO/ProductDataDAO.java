@@ -7,7 +7,11 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import br.com.calculafeira.calculafeira.Model.ProductData;
 
@@ -129,11 +133,6 @@ public class ProductDataDAO {
         return productData;
     }
 
-    private Cursor getCursor() throws SQLException {
-        String[] colunas = new String[]{_ID, FK_PRODUCT, PURCHASE_DATE, QUANTITY, PRICE};
-        return database.query(TABLE, colunas, null, null, null, null, null, null);
-    }
-
     public ArrayList<ProductData> getListProductDatas() {
         Cursor c;
         try {
@@ -161,7 +160,52 @@ public class ProductDataDAO {
         }
         return productDatas;
     }
-    
+
+    public ArrayList<ProductData> getListProductDatasToDateNow() {
+        Cursor c;
+        try {
+            c = getCursorToDateNow();
+        } catch (SQLException e) {
+            Log.e("ProductDataDAO", "Erro ao buscar a lista de Dados Product: " + e.toString());
+            return null;
+        }
+        ArrayList<ProductData> productDatas = new ArrayList<ProductData>();
+        if (c.moveToFirst()) {
+            int idxId = c.getColumnIndex(_ID);
+            int idxFkProduct = c.getColumnIndex(FK_PRODUCT);
+            int idxPurchaseDate = c.getColumnIndex(PURCHASE_DATE);
+            int idxQuantity = c.getColumnIndex(QUANTITY);
+            int idxPrice = c.getColumnIndex(PRICE);
+            do {
+                ProductData productData = new ProductData();
+                productData.setIdProductData(c.getLong(idxId));
+                productData.setFkProduct(c.getLong(idxFkProduct));
+                productData.setPurchaseDate(c.getString(idxPurchaseDate));
+                productData.setQuantity(c.getInt(idxQuantity));
+                productData.setPrice(c.getDouble(idxPrice));
+                productDatas.add(productData);
+            } while (c.moveToNext());
+        }
+        return productDatas;
+    }
+
+    private Cursor getCursor() throws SQLException {
+        String[] colunas = new String[]{_ID, FK_PRODUCT, PURCHASE_DATE, QUANTITY, PRICE};
+        return database.query(TABLE, colunas, null, null, null, null, null, null);
+    }
+
+    private Cursor getCursorToDateNow() throws SQLException {
+        String[] colunas = new String[]{_ID, FK_PRODUCT, PURCHASE_DATE, QUANTITY, PRICE};
+        String whereClause = PURCHASE_DATE + " = ?";
+        String[] whereArgs = new String[] { "date('now')" };
+        //return database.query(TABLE,colunas,whereClause,whereArgs,null,null,PURCHASE_DATE);
+        //return database.rawQuery("SELECT * FROM " + TABLE + " WHERE " + _ID + "=?", new String[] { "1" });
+        DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", new Locale("pt", "BR"));
+        Date date = new Date();
+        String data = "date('" + dateFormat.format(date) + "')";
+        return database.rawQuery("SELECT * FROM " + TABLE + " WHERE " + PURCHASE_DATE + " =?", new String[] { data });
+    }
+
     public Double getTotalPrice(){
         ArrayList<ProductData> productDatas = getListProductDatas();
         Double totalPrice = Double.parseDouble("0");

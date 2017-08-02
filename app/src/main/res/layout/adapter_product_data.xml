@@ -34,8 +34,37 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textView_total_price_titler"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="5sp"
+                android:text="@string/total_value"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/textView_unit_price_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="5sp"
+                android:text="@string/unit_value"
+                android:textColor="@android:color/black"
+                android:textSize="15sp"
+                android:textStyle="italic"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
                 android:id="@+id/textView_total_price_product_adapter"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5sp"
@@ -46,7 +75,7 @@
 
             <TextView
                 android:id="@+id/textView_unit_price_product_adapter"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:padding="5sp"
                 android:text="Unit price"
@@ -69,6 +98,17 @@
             android:layout_width="50sp"
             android:layout_height="match_parent"
             android:text="@string/menos" />
+
+        <TextView
+            android:id="@+id/textView_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5sp"
+            android:text="0"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textStyle="italic"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/button_mais"

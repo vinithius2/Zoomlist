@@ -1,6 +1,7 @@
 package br.com.calculafeira.calculafeira.Adapter;
 
 import android.content.Context;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -26,9 +27,9 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
     private ArrayList<ProductData> productDatas;
     private Context context;
     private TextView totalPrice, totalQuantity;
-    private DecimalFormat maskMoney;
+    private Toolbar mToolbar;
 
-    public AdapterProductData(Context context, int resource, ArrayList<ProductData> productDatas, TextView totalPrice, TextView totalQuantity) {
+    public AdapterProductData(Context context, int resource, ArrayList<ProductData> productDatas, TextView totalPrice, TextView totalQuantity, Toolbar mToolbar) {
         super(context, resource, productDatas);
         this.resourceId = resource;
         Collections.reverse(productDatas);
@@ -36,6 +37,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         this.totalPrice = totalPrice;
         this.totalQuantity = totalQuantity;
         this.context = context;
+        this.mToolbar = mToolbar;
     }
 
     @Override
@@ -43,46 +45,66 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
         }
+
         final ProductData productData = productDatas.get(position);
+
         final TextView textView_name_product = (TextView) convertView.findViewById(R.id.textView_name_product_adapter);
         final TextView textView_total_price_product = (TextView) convertView.findViewById(R.id.textView_total_price_product_adapter);
         final TextView textView_unit_price_product = (TextView) convertView.findViewById(R.id.textView_unit_price_product_adapter);
+        final TextView textView_unit = (TextView) convertView.findViewById(R.id.textView_unit);
+
         Button buttonMais = (Button) convertView.findViewById(R.id.button_mais);
         Button buttonMenos = (Button) convertView.findViewById(R.id.button_menos);
+
         textView_name_product.setText(productData.toString());
-        setSave(productData, textView_total_price_product, textView_unit_price_product);
+
+        setSave(productData, productData.getQuantity(), textView_total_price_product, textView_unit_price_product, textView_unit);
+
         buttonMais.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                productData.setQuantity(++quantity);
-                DataManager.getInstance().getProductDataDAO().save(productData);
-                setSave(productData, textView_total_price_product, textView_unit_price_product);
+                setSave(productData, ++quantity, textView_total_price_product, textView_unit_price_product, textView_unit);
             }
         });
         buttonMenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                productData.setQuantity(--quantity);
-                DataManager.getInstance().getProductDataDAO().save(productData);
-                setSave(productData, textView_total_price_product, textView_unit_price_product);
+                setSave(productData, --quantity, textView_total_price_product, textView_unit_price_product, textView_unit);
             }
         });
         return convertView;
     }
 
-    private void setQuantityAndTotalMoney(TextView totalPrice, TextView totalQuantity){
-        maskMoney = new DecimalFormat("R$ 0.00");
-        totalPrice.setText(maskMoney.format(DataManager.getInstance().getProductDataDAO().getTotalPrice()));
-        totalQuantity.setText(DataManager.getInstance().getProductDataDAO().getCount());
+    private void setQuantityAndTotalMoney(ArrayList<ProductData> productDatas){
+        Double totalValue = 0.0;
+        int totalProduct = 0;
+        for(ProductData p : productDatas){
+            totalValue += p.getQuantity() * p.getPrice();
+            totalProduct += p.getQuantity();
+        }
+        mToolbar.setTitle(getMonetary(String.valueOf(totalValue)));
+        totalPrice.setText(getMonetary(String.valueOf(totalValue)));
+        String result = 1 == totalProduct ? "Produto: " : "Produtos: ";
+        totalQuantity.setText(result + String.valueOf(totalProduct));
     }
 
-    private void setSave(ProductData productData, TextView textView_total_price_product, TextView textView_unit_price_product){
-        String total_price = String.valueOf(productData.getQuantity() * productData.getPrice());
-        textView_total_price_product.setText(total_price);
-        textView_unit_price_product.setText(productData.getPrice().toString());
-        DataManager.getInstance().getProductDataDAO().save(productData);
-//                setQuantityAndTotalMoney(totalPrice, totalQuantity);
+    private void setSave(ProductData productData, int quantity, TextView textView_total_price_product, TextView textView_unit_price_product, TextView textView_unit){
+        if (quantity >= 0){
+            productData.setQuantity(quantity);
+            DataManager.getInstance().getProductDataDAO().save(productData);
+            setQuantityAndTotalMoney(productDatas);
+            String total_price = String.valueOf(productData.getQuantity() * productData.getPrice());
+            textView_total_price_product.setText(getMonetary(total_price));
+            textView_unit_price_product.setText(getMonetary(productData.getPrice().toString()));
+            textView_unit.setText(String.valueOf(productData.getQuantity()));
+        }
+    }
+
+    private String getMonetary(String money){
+        double parsed = Double.parseDouble(money);
+        String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+        return formatted;
     }
 }
