@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:longClickable="true"
+    >
 
     <TableRow
         android:layout_width="match_parent"
@@ -17,16 +21,31 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/textView_name_product_adapter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10sp"
-        android:text="Name product"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_weight="1" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView_icon_category"
+                android:layout_width="1dp"
+                android:layout_height="44dp"
+                android:layout_weight="0.2"
+                android:layout_marginLeft="2dp"
+                app:srcCompat="@drawable/ico_alimento" />
+
+            <TextView
+                android:id="@+id/textView_name_product_adapter"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10sp"
+                android:text="Name product"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -69,9 +88,9 @@
                 android:layout_weight="1"
                 android:padding="5sp"
                 android:text="Total price"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorRed"
                 android:textSize="15sp"
-                android:textStyle="italic" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView_unit_price_product_adapter"
@@ -79,9 +98,9 @@
                 android:layout_height="wrap_content"
                 android:padding="5sp"
                 android:text="Unit price"
-                android:textColor="@android:color/black"
+                android:textColor="@color/colorGreen"
                 android:textSize="15sp"
-                android:textStyle="italic"
+                android:textStyle="bold"
                 android:layout_weight="1" />
 
         </LinearLayout>

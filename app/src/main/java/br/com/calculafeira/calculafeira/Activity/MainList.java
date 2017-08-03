@@ -102,42 +102,43 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                final ProductData productData = (ProductData) listView.getItemAtPosition(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage("Você deseja realmente deletar o item: " + productData.getProduct().getNameProduct());
-                builder.setCancelable(true);
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        DataManager.getInstance().getProductDataDAO().delete(productData);
-                        populaAdapter();
-                    }
-                });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                if (position != 0) {
+                    final ProductData productData = (ProductData) listView.getItemAtPosition(position);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage(getResources().getString(R.string.dialog_delete) + productData.getProduct().getNameProduct() + "?");
+                    builder.setCancelable(true);
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            DataManager.getInstance().getProductDataDAO().delete(productData);
+                            populaAdapter();
+                        }
+                    });
+                    builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
                 return false;
             }
         });
+
     }
 
     private void populaAdapter(){
-        ArrayList<Product> products = DataManager.getInstance().getProductDAO().getListProducts();
-        if (products != null) {
-            productDataAdapter = new AdapterProductData(
-                    this,
-                    R.layout.adapter_product_data,
-                    DataManager.getInstance().getProductDataDAO().getListProductDatas(),
-                    totalPrice,
-                    totalQuantity,
-                    mToolbar
-            );
-            listView.setAdapter(productDataAdapter);
-            productDataAdapter.notifyDataSetChanged();
-        }
+
+        productDataAdapter = new AdapterProductData(
+                this,
+                R.layout.adapter_product_data,
+                DataManager.getInstance().getProductDataDAO().getListProductDatas(),
+                totalPrice,
+                totalQuantity,
+                mToolbar
+        );
+        listView.setAdapter(productDataAdapter);
+        productDataAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -245,16 +246,16 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         if (id == R.id.action_delete) {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("Você deseja realmente deletar todos os ítens?");
+            builder.setMessage(getResources().getString(R.string.list_delete));
             builder.setCancelable(true);
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     for (ProductData p : DataManager.getInstance().getProductDataDAO().getListProductDatas()) {
                         DataManager.getInstance().getProductDataDAO().delete(p);
                     }
-                    mToolbar.setTitle("R$0,00");
-                    totalPrice.setText("R$0,00");
-                    totalQuantity.setText("Produtos: 0");
+                    mToolbar.setTitle(getResources().getString(R.string.value_default));
+                    totalPrice.setText(getResources().getString(R.string.value_default));
+                    totalQuantity.setText(getResources().getString(R.string.no_products));
                     populaAdapter();
                 }
             });

@@ -94,7 +94,7 @@ public class ProductDataDAO {
 
     public int getCount() {
         int count = 0;
-        Cursor cursor = database.rawQuery("SELECT COUNT(*) FROM " + ProductDAO.TABLE, null);
+        Cursor cursor = database.rawQuery("SELECT COUNT(*) FROM " + ProductDataDAO.TABLE, null);
         if (null != cursor) {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();

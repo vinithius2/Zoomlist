@@ -1,12 +1,15 @@
 package br.com.calculafeira.calculafeira.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -38,6 +41,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         this.totalQuantity = totalQuantity;
         this.context = context;
         this.mToolbar = mToolbar;
+        setQuantityAndTotalMoney(productDatas);
     }
 
     @Override
@@ -52,26 +56,27 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         final TextView textView_total_price_product = (TextView) convertView.findViewById(R.id.textView_total_price_product_adapter);
         final TextView textView_unit_price_product = (TextView) convertView.findViewById(R.id.textView_unit_price_product_adapter);
         final TextView textView_unit = (TextView) convertView.findViewById(R.id.textView_unit);
+        final ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView_icon_category);
 
         Button buttonMais = (Button) convertView.findViewById(R.id.button_mais);
         Button buttonMenos = (Button) convertView.findViewById(R.id.button_menos);
 
         textView_name_product.setText(productData.toString());
 
-        setSave(productData, productData.getQuantity(), textView_total_price_product, textView_unit_price_product, textView_unit);
+        setSave(productData, productData.getQuantity(), textView_total_price_product, textView_unit_price_product, textView_unit, imageView);
 
         buttonMais.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                setSave(productData, ++quantity, textView_total_price_product, textView_unit_price_product, textView_unit);
+                setSave(productData, ++quantity, textView_total_price_product, textView_unit_price_product, textView_unit, imageView);
             }
         });
         buttonMenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                setSave(productData, --quantity, textView_total_price_product, textView_unit_price_product, textView_unit);
+                setSave(productData, --quantity, textView_total_price_product, textView_unit_price_product, textView_unit, imageView);
             }
         });
         return convertView;
@@ -86,11 +91,16 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         }
         mToolbar.setTitle(getMonetary(String.valueOf(totalValue)));
         totalPrice.setText(getMonetary(String.valueOf(totalValue)));
-        String result = 1 == totalProduct ? "Produto: " : "Produtos: ";
-        totalQuantity.setText(result + String.valueOf(totalProduct));
+        String result = context.getResources().getString(R.string.no_products);
+        if (totalProduct == 1) {
+            result = String.valueOf(totalProduct) + " " + context.getResources().getString(R.string.singular_products);
+        } else if (totalProduct > 1){
+            result = String.valueOf(totalProduct) + " " + context.getResources().getString(R.string.plural_product);
+        }
+        totalQuantity.setText(result);
     }
 
-    private void setSave(ProductData productData, int quantity, TextView textView_total_price_product, TextView textView_unit_price_product, TextView textView_unit){
+    private void setSave(ProductData productData, int quantity, TextView textView_total_price_product, TextView textView_unit_price_product, TextView textView_unit, ImageView imageView){
         if (quantity >= 0){
             productData.setQuantity(quantity);
             DataManager.getInstance().getProductDataDAO().save(productData);
@@ -99,6 +109,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
             textView_total_price_product.setText(getMonetary(total_price));
             textView_unit_price_product.setText(getMonetary(productData.getPrice().toString()));
             textView_unit.setText(String.valueOf(productData.getQuantity()));
+            imageView.setImageDrawable(getImageCategory(productData));
         }
     }
 
@@ -106,5 +117,25 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         double parsed = Double.parseDouble(money);
         String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
         return formatted;
+    }
+
+    private Drawable getImageCategory(ProductData productData){
+        String name = productData.getProduct().getNameCategory();
+        Drawable drawable = null;
+        switch (name) {
+            case "Alimento":
+                drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_alimento, null);
+                break;
+            case "Bebida":
+                drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_bebida, null);
+                break;
+            case "Limpeza":
+                drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_limpeza, null);
+                break;
+            case "Higiene":
+                drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_higiene, null);
+                break;
+        }
+        return drawable;
     }
 }
