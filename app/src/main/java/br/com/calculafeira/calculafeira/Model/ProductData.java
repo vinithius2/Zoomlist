@@ -2,6 +2,7 @@ package br.com.calculafeira.calculafeira.Model;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -12,7 +13,7 @@ import br.com.calculafeira.calculafeira.Persistence.DataManager;
  * Created by DPGE on 22/06/2017.
  */
 
-public class ProductData {
+public class ProductData implements Serializable {
 
     private Long idProductData;
     private Long fkProduct;

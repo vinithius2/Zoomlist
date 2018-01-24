@@ -8,4 +8,28 @@
     tools:context="br.com.calculafeira.calculafeira.Activity.ConfigActivity"
     tools:showIn="@layout/activity_config">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_price_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edit_text_estimate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/estimate"
+                android:inputType="numberDecimal" />
+
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

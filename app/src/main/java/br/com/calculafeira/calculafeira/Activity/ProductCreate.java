@@ -35,6 +35,10 @@ public class ProductCreate extends AppCompatActivity {
         setContentView(R.layout.activity_product_create);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if (getIntent().hasExtra("productData")) {
+            Bundle extras = getIntent().getExtras();
+            ProductData productDataEdit = (ProductData) extras.getSerializable("productData");
+        }
 
         name_product = (EditText)findViewById(R.id.edit_text_name_product);
         price_product = (EditText)findViewById(R.id.edit_text_price_product);

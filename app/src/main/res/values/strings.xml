@@ -33,4 +33,16 @@
     <string name="os_materiais_de_higiene_equivalem_a">Os materias de higiene pessoal equivalem a </string>
     <string name="os_materiais_de_limpeza_equivalem_a">Os materiais de limpeza equivalem a </string>
     <string name="de_suas_compras"> de suas compras.</string>
+    <string name="estimate">Orçamento</string>
+    <string name="about">Sobre</string>
+    <string name="txt_desenvolvedor">Desenvolvedor</string>
+    <string name="txtDefault">------</string>
+    <string name="txt_developer">Desenvolvedor</string>
+    <string name="txt_version_app">Versão aplicativo</string>
+    <string name="txt_contact">Contato</string>
+    <string name="txt_about">Descrição</string>
+    <string name="txt_redes_sociais_app">Redes sociais (Aplicativo)</string>
+    <string name="txt_redes_sociais_developer">Redes sociais (Desenvolvedor)</string>
+    <string name="btnFechar">Fechar</string>
+    <string name="estimate_alert">Adicione o valor do seu orçamento!</string>
 </resources>

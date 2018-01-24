@@ -1,148 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.daimajia.swipe.SwipeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/swipeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="false"
-    android:longClickable="true"
-    >
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
+    android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/bottom_wrapper"
+        android:background="#ffffff"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <include layout="@layout/content_bottom_view" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:clickable="false"
+        android:longClickable="true"
+        android:background="@color/colorWhite"
+        >
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/imageView_icon_category"
-                android:layout_width="35sp"
-                android:layout_height="wrap_content"
-                android:paddingStart="4sp"
-                android:paddingEnd="4sp"
-                app:srcCompat="@drawable/ico_alimento"
-                tools:ignore="RtlSymmetry,SmallSp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView_name_product_adapter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="5sp"
-                android:text="Product name"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/imageView_icon_category"
+                    android:layout_width="35sp"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="4sp"
+                    android:paddingEnd="4sp"
+                    app:srcCompat="@drawable/ico_alimento"
+                    tools:ignore="RtlSymmetry,SmallSp" />
+
+                <TextView
+                    android:id="@+id/textView_name_product_adapter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="5sp"
+                    android:text="Product name"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_total_price_titler"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5sp"
+                    android:text="@string/total_value"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/textView_unit_price_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5sp"
+                    android:text="@string/unit_value"
+                    android:textColor="@android:color/black"
+                    android:textSize="15sp"
+                    android:textStyle="italic"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textView_total_price_product_adapter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="5sp"
+                    android:text="Total price"
+                    android:textColor="@color/colorRed"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView_unit_price_product_adapter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="5sp"
+                    android:text="Unit price"
+                    android:textColor="@color/colorGreen"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_weight="1" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_gravity="fill_vertical">
+
+            <at.markushi.ui.CircleButton
+                android:id="@+id/button_menos"
+                android:layout_width="60dip"
+                android:layout_height="64dip"
+                android:src="@drawable/ico_menos"
+                app:cb_color="#99CC00"
+                app:cb_pressedRingWidth="8dip" />
 
             <TextView
-                android:id="@+id/textView_total_price_titler"
-                android:layout_width="0dp"
+                android:id="@+id/textView_unit"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5sp"
-                android:text="@string/total_value"
-                android:textColor="@android:color/black"
-                android:textSize="15sp"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/textView_unit_price_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:padding="5sp"
-                android:text="@string/unit_value"
+                android:text="@string/zero"
                 android:textColor="@android:color/black"
                 android:textSize="15sp"
                 android:textStyle="italic"
                 android:layout_weight="1" />
 
-        </LinearLayout>
+            <at.markushi.ui.CircleButton
+                android:id="@+id/button_mais"
+                android:layout_width="60dip"
+                android:layout_height="60dip"
+                android:src="@drawable/ico_mais"
+                app:cb_color="#99CC00"
+                app:cb_pressedRingWidth="8dip" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        </TableRow>
 
-            <TextView
-                android:id="@+id/textView_total_price_product_adapter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5sp"
-                android:text="Total price"
-                android:textColor="@color/colorRed"
-                android:textSize="15sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textView_unit_price_product_adapter"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:padding="5sp"
-                android:text="Unit price"
-                android:textColor="@color/colorGreen"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_weight="1" />
-
-        </LinearLayout>
+        </TableRow>
 
     </LinearLayout>
-
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_gravity="fill_vertical">
-
-        <at.markushi.ui.CircleButton
-            android:id="@+id/button_menos"
-            android:layout_width="60dip"
-            android:layout_height="64dip"
-            android:src="@drawable/ico_menos"
-            app:cb_color="#99CC00"
-            app:cb_pressedRingWidth="8dip" />
-
-        <TextView
-            android:id="@+id/textView_unit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/zero"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="italic"
-            android:layout_weight="1" />
-
-        <at.markushi.ui.CircleButton
-            android:id="@+id/button_mais"
-            android:layout_width="60dip"
-            android:layout_height="60dip"
-            android:src="@drawable/ico_mais"
-            app:cb_color="#99CC00"
-            app:cb_pressedRingWidth="8dip" />
-
-    </TableRow>
-
-    </TableRow>
-
-</LinearLayout>
+</com.daimajia.swipe.SwipeLayout>
