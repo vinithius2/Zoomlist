@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v4.app.NotificationCompat;
 
-import br.com.calculafeira.calculafeira.DAO.ProductDataDAO;
 import br.com.calculafeira.calculafeira.DAO.ProductDAO;
+import br.com.calculafeira.calculafeira.DAO.ProductDataDAO;
 
 /**
  * Created by DPGE on 22/06/2017.

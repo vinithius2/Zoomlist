@@ -37,8 +37,8 @@
         android:layout_marginEnd="8dp"
         android:elevation="8dp"
         android:layout_marginBottom="-32dp"
-        fab:fab_icon="@android:drawable/ic_input_add"
-        fab:fab_colorNormal="@color/colorAccent"
+        fab:fab_icon="@drawable/ico_mais"
+        fab:fab_colorNormal="@color/colorBlue"
         fab:fab_size="mini"
         />
 

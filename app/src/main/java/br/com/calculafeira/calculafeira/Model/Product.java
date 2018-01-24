@@ -1,12 +1,15 @@
 package br.com.calculafeira.calculafeira.Model;
 
-import br.com.calculafeira.calculafeira.Persistence.DataManager;
-
 /**
  * Created by DPGE on 22/06/2017.
  */
 
 public class Product {
+
+    public static final String ALIMENTO = "Alimento";
+    public static final String BEBIDA = "Bebida";
+    public static final String HIGIENE = "Higiene";
+    public static final String LIMPEZA = "Limpeza";
 
     private Long idProduct;
     private String nameProduct;

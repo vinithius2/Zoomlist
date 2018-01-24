@@ -1,53 +1,48 @@
 package br.com.calculafeira.calculafeira.Activity;
 
+import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 import br.com.calculafeira.calculafeira.Adapter.AdapterProductData;
-import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
-import br.com.calculafeira.calculafeira.Util.Mask;
 
 public class MainList extends AppCompatActivity implements AbsListView.OnScrollListener {
-
 
     Toolbar mToolbar;
     View mContainerHeader;
     FloatingActionButton fab;
     ObjectAnimator fade;
-    TextView totalPrice, totalQuantity;
+    TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene, porcentLimpeza;
+    TableRow tableRowAlimento, tableRowBebida, tableRowHigiene, tableRowLimpeza;
     ListView listView;
     DecimalFormat maskMoney;
     private Context context = this;
@@ -71,6 +66,16 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
             setSupportActionBar(mToolbar);
             totalPrice = (TextView) mToolbar.findViewById(R.id.textView_total_price);
             totalQuantity = (TextView) mToolbar.findViewById(R.id.textView_total_quantity);
+            porcentAlimento = (TextView) mToolbar.findViewById(R.id.textView_porcent_alimento);
+            porcentBebida = (TextView) mToolbar.findViewById(R.id.textView_porcent_bebida);
+            porcentHigiene = (TextView) mToolbar.findViewById(R.id.textView_porcent_higiene);
+            porcentLimpeza = (TextView) mToolbar.findViewById(R.id.textView_porcent_limpeza);
+            tableRowAlimento = (TableRow) mToolbar.findViewById(R.id.tableRow_alimento);
+            tableRowBebida = (TableRow) mToolbar.findViewById(R.id.tableRow_bebidas);
+            tableRowHigiene = (TableRow) mToolbar.findViewById(R.id.tableRow_higiene);
+            tableRowLimpeza = (TableRow) mToolbar.findViewById(R.id.tableRow_limpeza);
+
+
         }
 
         // Inflate the header view and attach it to the ListView
@@ -80,6 +85,56 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
 
         totalPrice = (TextView) headerView.findViewById(R.id.textView_total_price);
         totalQuantity = (TextView) headerView.findViewById(R.id.textView_total_quantity);
+        porcentAlimento = (TextView) headerView.findViewById(R.id.textView_porcent_alimento);
+        porcentBebida = (TextView) headerView.findViewById(R.id.textView_porcent_bebida);
+        porcentHigiene = (TextView) headerView.findViewById(R.id.textView_porcent_higiene);
+        porcentLimpeza = (TextView) headerView.findViewById(R.id.textView_porcent_limpeza);
+
+        tableRowAlimento = (TableRow) headerView.findViewById(R.id.tableRow_alimento);
+        tableRowBebida = (TableRow) headerView.findViewById(R.id.tableRow_bebidas);
+        tableRowHigiene = (TableRow) headerView.findViewById(R.id.tableRow_higiene);
+        tableRowLimpeza = (TableRow) headerView.findViewById(R.id.tableRow_limpeza);
+
+        tableRowAlimento.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Snackbar.make(v, getResources().getString(R.string.os_alimentos_equivalem_a)
+                        + " " + porcentAlimento.getText().toString()
+                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
+        });
+        tableRowBebida.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Snackbar.make(v, getResources().getString(R.string.as_bebidas_equivalem_a)
+                        + " " + porcentBebida.getText().toString()
+                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
+        });
+        tableRowHigiene.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Snackbar.make(v, getResources().getString(R.string.os_materiais_de_higiene_equivalem_a)
+                        + " " + porcentHigiene.getText().toString()
+                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
+        });
+        tableRowLimpeza.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Snackbar.make(v, getResources().getString(R.string.os_materiais_de_limpeza_equivalem_a)
+                        + " " + porcentLimpeza.getText().toString()
+                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
+        });
 
         // prepare the fade in/out animator
         fade = ObjectAnimator.ofFloat(mContainerHeader, "alpha", 0f, 1f);
@@ -105,7 +160,8 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 if (position != 0) {
                     final ProductData productData = (ProductData) listView.getItemAtPosition(position);
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setMessage(getResources().getString(R.string.dialog_delete) + productData.getProduct().getNameProduct() + "?");
+                    builder.setMessage(getResources().getString(R.string.dialog_delete)
+                            + " " + productData.getProduct().getNameProduct() + "?");
                     builder.setCancelable(true);
                     builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
@@ -135,8 +191,14 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 DataManager.getInstance().getProductDataDAO().getListProductDatas(),
                 totalPrice,
                 totalQuantity,
+                porcentAlimento,
+                porcentBebida,
+                porcentHigiene,
+                porcentLimpeza,
+                totalQuantity,
                 mToolbar
         );
+
         listView.setAdapter(productDataAdapter);
         productDataAdapter.notifyDataSetChanged();
     }
@@ -255,6 +317,10 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                     }
                     mToolbar.setTitle(getResources().getString(R.string.value_default));
                     totalPrice.setText(getResources().getString(R.string.value_default));
+                    porcentAlimento.setText(getResources().getString(R.string.porcent_zero));
+                    porcentBebida.setText(getResources().getString(R.string.porcent_zero));
+                    porcentHigiene.setText(getResources().getString(R.string.porcent_zero));
+                    porcentLimpeza.setText(getResources().getString(R.string.porcent_zero));
                     totalQuantity.setText(getResources().getString(R.string.no_products));
                     populaAdapter();
                 }

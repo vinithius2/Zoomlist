@@ -2,7 +2,6 @@ package br.com.calculafeira.calculafeira.Model;
 
 import android.util.Log;
 
-import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -45,8 +44,7 @@ public class ProductData {
     }
 
     public Product getProduct() {
-        Product product = DataManager.getInstance().getProductDAO().getIdProduct(getFkProduct());
-        return product;
+        return DataManager.getInstance().getProductDAO().getIdProduct(getFkProduct());
     }
 
     public void setFkProduct(Long fkProduct) {

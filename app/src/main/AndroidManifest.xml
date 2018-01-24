@@ -20,12 +20,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.CreateProduct"
-            android:label="@string/title_activity_create_product"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".Activity.ProductCreate"
             android:label="@string/title_activity_product_create"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity.ConfigActivity"
+            android:label="@string/title_activity_config"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

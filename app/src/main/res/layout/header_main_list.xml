@@ -1,37 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:elevation="10dp"
     android:background="?attr/colorPrimary">
 
     <LinearLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/container"
         android:orientation="vertical"
+        android:paddingBottom="30dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="40dp" >
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/textView_total_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
+            android:text="@string/value_default"
             android:textColor="@android:color/white"
             android:textSize="60sp"
-            android:text="@string/value_default"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView_total_quantity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_marginTop="16dp"
-            android:textStyle="bold"
+            android:text="@string/count_produtos"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:text="@string/count_produtos"/>
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <TableRow
+                android:id="@+id/tableRow_alimento"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="1dp"
+                    app:srcCompat="@drawable/ico_alimento_bw" />
+
+                <TextView
+                    android:id="@+id/textView_porcent_alimento"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/porcent_zero"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow_bebidas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20sp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="1dp"
+                    app:srcCompat="@drawable/ico_bebida_bw" />
+
+                <TextView
+                    android:id="@+id/textView_porcent_bebida"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/porcent_zero"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow_higiene"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20sp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="1dp"
+                    app:srcCompat="@drawable/ico_higiene_bw" />
+
+                <TextView
+                    android:id="@+id/textView_porcent_higiene"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/porcent_zero"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/tableRow_limpeza"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20sp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="1dp"
+                    app:srcCompat="@drawable/ico_limpeza_bw" />
+
+                <TextView
+                    android:id="@+id/textView_porcent_limpeza"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/porcent_zero"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
+
+            </TableRow>
+
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>

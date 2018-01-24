@@ -1,5 +1,6 @@
 package br.com.calculafeira.calculafeira.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -8,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import at.markushi.ui.CircleButton;
+import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
@@ -29,15 +32,30 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
     private final int resourceId;
     private ArrayList<ProductData> productDatas;
     private Context context;
-    private TextView totalPrice, totalQuantity;
+    private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene, porcentLimpeza;
     private Toolbar mToolbar;
 
-    public AdapterProductData(Context context, int resource, ArrayList<ProductData> productDatas, TextView totalPrice, TextView totalQuantity, Toolbar mToolbar) {
+    public AdapterProductData(Context context,
+                              int resource,
+                              ArrayList<ProductData> productDatas,
+                              TextView totalPrice,
+                              TextView quantity,
+                              TextView porcentAlimento,
+                              TextView porcentBebida,
+                              TextView porcentHigiene,
+                              TextView porcentLimpeza,
+                              TextView totalQuantity,
+                              Toolbar mToolbar) {
+
         super(context, resource, productDatas);
         this.resourceId = resource;
         Collections.reverse(productDatas);
         this.productDatas = productDatas;
         this.totalPrice = totalPrice;
+        this.porcentAlimento = porcentAlimento;
+        this.porcentBebida = porcentBebida;
+        this.porcentHigiene = porcentHigiene;
+        this.porcentLimpeza = porcentLimpeza;
         this.totalQuantity = totalQuantity;
         this.context = context;
         this.mToolbar = mToolbar;
@@ -58,8 +76,8 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         final TextView textView_unit = (TextView) convertView.findViewById(R.id.textView_unit);
         final ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView_icon_category);
 
-        Button buttonMais = (Button) convertView.findViewById(R.id.button_mais);
-        Button buttonMenos = (Button) convertView.findViewById(R.id.button_menos);
+        CircleButton buttonMais = (CircleButton) convertView.findViewById(R.id.button_mais);
+        CircleButton buttonMenos = (CircleButton) convertView.findViewById(R.id.button_menos);
 
         textView_name_product.setText(productData.toString());
 
@@ -82,15 +100,46 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         return convertView;
     }
 
+    @SuppressLint("SetTextI18n")
     private void setQuantityAndTotalMoney(ArrayList<ProductData> productDatas){
-        Double totalValue = 0.0;
+        Double totalValue = 0d;
         int totalProduct = 0;
+        float quantityAlimentos = 0f;
+        float quantityBebidas = 0f;
+        float quantityHigiene = 0f;
+        float quantityLimpeza = 0f;
         for(ProductData p : productDatas){
             totalValue += p.getQuantity() * p.getPrice();
             totalProduct += p.getQuantity();
+            switch (p.getProduct().getNameCategory()){
+                case Product.ALIMENTO:
+                    quantityAlimentos += p.getQuantity();
+                    break;
+                case Product.BEBIDA:
+                    quantityBebidas += p.getQuantity();
+                    break;
+                case Product.HIGIENE:
+                    quantityHigiene += p.getQuantity();
+                    break;
+                case Product.LIMPEZA:
+                    quantityLimpeza += p.getQuantity();
+                    break;
+            }
         }
         mToolbar.setTitle(getMonetary(String.valueOf(totalValue)));
         totalPrice.setText(getMonetary(String.valueOf(totalValue)));
+        DecimalFormat df = new DecimalFormat("0.0");
+        if (totalProduct != 0){
+            porcentAlimento.setText(df.format(quantityAlimentos*100/totalProduct) + "%");
+            porcentBebida.setText(df.format(quantityBebidas*100/totalProduct) + "%");
+            porcentHigiene.setText(df.format(quantityHigiene*100/totalProduct) + "%");
+            porcentLimpeza.setText(df.format(quantityLimpeza*100/totalProduct) + "%");
+        } else {
+            porcentAlimento.setText("0.0%");
+            porcentBebida.setText("0.0%");
+            porcentHigiene.setText("0.0%");
+            porcentLimpeza.setText("0.0%");
+        }
         String result = context.getResources().getString(R.string.no_products);
         if (totalProduct == 1) {
             result = String.valueOf(totalProduct) + " " + context.getResources().getString(R.string.singular_products);

@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,19 +30,20 @@
 
             <ImageView
                 android:id="@+id/imageView_icon_category"
-                android:layout_width="1dp"
-                android:layout_height="44dp"
-                android:layout_weight="0.2"
-                android:layout_marginLeft="2dp"
-                app:srcCompat="@drawable/ico_alimento" />
+                android:layout_width="35sp"
+                android:layout_height="wrap_content"
+                android:paddingStart="4sp"
+                android:paddingEnd="4sp"
+                app:srcCompat="@drawable/ico_alimento"
+                tools:ignore="RtlSymmetry,SmallSp" />
 
             <TextView
                 android:id="@+id/textView_name_product_adapter"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:padding="10sp"
-                android:text="Name product"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5sp"
+                android:text="Product name"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -110,30 +112,34 @@
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:layout_gravity="fill_vertical">
 
-        <Button
+        <at.markushi.ui.CircleButton
             android:id="@+id/button_menos"
-            android:layout_width="50sp"
-            android:layout_height="match_parent"
-            android:text="@string/menos" />
+            android:layout_width="60dip"
+            android:layout_height="64dip"
+            android:src="@drawable/ico_menos"
+            app:cb_color="#99CC00"
+            app:cb_pressedRingWidth="8dip" />
 
         <TextView
             android:id="@+id/textView_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="5sp"
-            android:text="0"
+            android:text="@string/zero"
             android:textColor="@android:color/black"
             android:textSize="15sp"
             android:textStyle="italic"
             android:layout_weight="1" />
 
-        <Button
+        <at.markushi.ui.CircleButton
             android:id="@+id/button_mais"
-            android:layout_width="50sp"
-            android:layout_height="match_parent"
-            android:text="@string/mais" />
+            android:layout_width="60dip"
+            android:layout_height="60dip"
+            android:src="@drawable/ico_mais"
+            app:cb_color="#99CC00"
+            app:cb_pressedRingWidth="8dip" />
 
     </TableRow>
 
