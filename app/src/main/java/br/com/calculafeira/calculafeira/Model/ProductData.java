@@ -10,7 +10,7 @@ import java.util.Locale;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 
 /**
- * Created by DPGE on 22/06/2017.
+ * Created by Vinithius on 22/06/2017.
  */
 
 public class ProductData implements Serializable {

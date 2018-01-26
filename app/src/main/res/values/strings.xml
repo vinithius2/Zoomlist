@@ -38,11 +38,18 @@
     <string name="txt_desenvolvedor">Desenvolvedor</string>
     <string name="txtDefault">------</string>
     <string name="txt_developer">Desenvolvedor</string>
-    <string name="txt_version_app">Versão aplicativo</string>
-    <string name="txt_contact">Contato</string>
+    <string name="txt_version_app">Versão do aplicativo</string>
     <string name="txt_about">Descrição</string>
     <string name="txt_redes_sociais_app">Redes sociais (Aplicativo)</string>
-    <string name="txt_redes_sociais_developer">Redes sociais (Desenvolvedor)</string>
+    <string name="txt_contato_developer">Contato (Desenvolvedor)</string>
     <string name="btnFechar">Fechar</string>
     <string name="estimate_alert">Adicione o valor do seu orçamento!</string>
+    <string name="editar_produto">Editar produto</string>
+    <string name="em_breve">Em breve =D</string>
+    <string name="cadastrar_produto">Cadastrar produto</string>
+    <string name="personal_name">Marcos Vinithius Melo Filho</string>
+    <string name="personal_email">marcos.vinithius@gmail.com</string>
+    <string name="subject_email">Calcula Feira App - Contato usuário</string>
+    <string name="personal_uri_linkedin">https://www.linkedin.com/in/marcos-vinithius-melo-filho-8a0a844b/</string>
+    <string name="about_text_app">O aplicativo Calcula Feira foi desenvolvido com a intenção de facilitar a vida de quem vai muito ao supermercado e não consegue administrar as suas compras, esqueça de vez o papel e a caneta e use uma ferramenta inteligente para te deixar tranquilo respeitando sempre o seu orçamento e te trazendo todo o feedback possível.</string>
 </resources>

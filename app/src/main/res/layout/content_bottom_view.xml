@@ -16,16 +16,16 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorAccent"
-            app:srcCompat="@android:drawable/ic_menu_edit" />
+            android:background="@drawable/background_edit"
+            app:srcCompat="@drawable/ic_mode_edit" />
 
         <ImageButton
             android:id="@+id/btn_delete"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/colorRed"
-            app:srcCompat="@android:drawable/ic_menu_delete" />
+            android:background="@drawable/background_delete"
+            app:srcCompat="@drawable/ic_delete" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

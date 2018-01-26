@@ -1,11 +1,11 @@
 package br.com.calculafeira.calculafeira.Adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -16,26 +16,23 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.content.SharedPreferences;
 
 import com.daimajia.swipe.SwipeLayout;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import br.com.calculafeira.calculafeira.Activity.ProductCreate;
-import br.com.calculafeira.calculafeira.Util.Helpers;
-
 import at.markushi.ui.CircleButton;
+import br.com.calculafeira.calculafeira.Activity.ProductCreateEdit;
 import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
+import br.com.calculafeira.calculafeira.Util.Helpers;
 
 /**
- * Created by DPGE on 27/06/2017.
+ * Created by Vinithius on 27/06/2017.
  */
 
 public class AdapterProductData extends ArrayAdapter<ProductData> {
@@ -43,15 +40,14 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
     private final int resourceId;
     private ArrayList<ProductData> productDatas;
     private Context context;
-    private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene, porcentLimpeza, estimate, quantity;
+    private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene,
+            porcentLimpeza, estimate;
     private Toolbar mToolbar;
-    private SharedPreferences mySharedPreferences;
 
     public AdapterProductData(Context context,
                               int resource,
                               ArrayList<ProductData> productDatas,
                               TextView totalPrice,
-                              TextView quantity,
                               TextView porcentAlimento,
                               TextView porcentBebida,
                               TextView porcentHigiene,
@@ -71,7 +67,6 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         this.porcentLimpeza = porcentLimpeza;
         this.totalQuantity = totalQuantity;
         this.estimate = estimate;
-        this.quantity = quantity;
         this.context = context;
         this.mToolbar = mToolbar;
         setQuantityAndTotalMoney(productDatas);
@@ -108,14 +103,20 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                setSave(productData, ++quantity, textView_total_price_product, textView_unit_price_product, textView_unit, imageView);
+                setSave(productData, ++quantity,
+                        textView_total_price_product, textView_unit_price_product,
+                        textView_unit, imageView
+                );
             }
         });
         buttonMenos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                setSave(productData, --quantity, textView_total_price_product, textView_unit_price_product, textView_unit, imageView);
+                setSave(productData, --quantity,
+                        textView_total_price_product, textView_unit_price_product,
+                        textView_unit, imageView
+                );
             }
         });
 
@@ -129,6 +130,11 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         DataManager.getInstance().getProductDataDAO().delete(productData);
+                        productDatas.remove(productData);
+                        if (productDatas.isEmpty()) {
+                            Helpers.setAtualizarDadosInicial(context, totalPrice, porcentAlimento, porcentBebida,
+                                    porcentHigiene, porcentLimpeza, totalQuantity, estimate, mToolbar);
+                        }
                         notifyDataSetChanged();
                     }
                 });
@@ -145,13 +151,13 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         imageButtonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, ProductCreate.class);
-                intent.putExtra("productData", productData);
+                Intent intent = new Intent(context, ProductCreateEdit.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("productData", productData);
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });
-
-
 
         return convertView;
     }
@@ -202,18 +208,15 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
             result = String.valueOf(totalProduct) + " " + context.getResources().getString(R.string.plural_product);
         }
         totalQuantity.setText(result);
-        mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
-        String value = mySharedPreferences.getString("estimate", "");
-        if (!value.isEmpty() && !value.equals("000")){
-            Double calc_estimate = Double.parseDouble(value) - totalValue;
+        if (Helpers.getEstimate(context) != null){
+            Double calc_estimate = Double.parseDouble(Helpers.getEstimate(context)) - totalValue;
             estimate.setText(Helpers.getMonetary(String.valueOf(calc_estimate)));
+            estimate.setBackground(null);
             estimate.setTextColor(context.getResources().getColor(R.color.colorWhite));
             estimate.setTypeface(Typeface.DEFAULT);
-            estimate.setTextSize(10);
+            estimate.setTextSize(12);
             if (calc_estimate < 0){
-                estimate.setTextColor(context.getResources().getColor(R.color.colorRed));
-                estimate.setTypeface(Typeface.DEFAULT_BOLD);
-                estimate.setTextSize(15);
+                estimate.setBackground(context.getResources().getDrawable(R.drawable.background_alert));
             }
         } else {
             estimate.setVisibility(View.GONE);
@@ -237,25 +240,19 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         String name = productData.getProduct().getNameCategory();
         Drawable drawable = null;
         switch (name) {
-            case "Alimento":
+            case Product.ALIMENTO:
                 drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_alimento, null);
                 break;
-            case "Bebida":
+            case Product.BEBIDA:
                 drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_bebida, null);
                 break;
-            case "Limpeza":
+            case Product.LIMPEZA:
                 drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_limpeza, null);
                 break;
-            case "Higiene":
+            case Product.HIGIENE:
                 drawable = ResourcesCompat.getDrawable(context.getResources(), R.drawable.ico_higiene, null);
                 break;
         }
         return drawable;
     }
-/*
-    public void atualizaLista(List<Livro> lista){
-        this.lista = lista;
-        notifyDataSetChanged();
-    }
-*/
 }

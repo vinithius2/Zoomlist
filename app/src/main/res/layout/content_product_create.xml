@@ -6,51 +6,70 @@
     android:layout_height="match_parent"
     android:paddingTop="2dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.calculafeira.calculafeira.Activity.ProductCreate"
+    tools:context="br.com.calculafeira.calculafeira.Activity.ProductCreateEdit"
     tools:showIn="@layout/activity_product_create">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="10dp"
         android:orientation="vertical"
+        android:padding="10dp"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_name_product"
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edit_text_name_product"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_assignment" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_name_product"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/name_product"
-                android:inputType="textCapSentences" />
+                android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edit_text_name_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/name_product"
+                    android:inputType="textCapSentences" />
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_price_product"
+            </android.support.design.widget.TextInputLayout>
+
+        </TableRow>
+        <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edit_text_price_product"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/ic_attach_money" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_price_product"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/price_product"
-                android:inputType="numberDecimal" />
+                android:layout_height="wrap_content">
 
-        </android.support.design.widget.TextInputLayout>
+                <EditText
+                    android:id="@+id/edit_text_price_product"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/price_product"
+                    android:inputType="numberDecimal" />
 
+            </android.support.design.widget.TextInputLayout>
+
+        </TableRow>
         <Spinner
             android:id="@+id/spinner_category_product"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@android:drawable/btn_dropdown"
-            />
+            android:background="@android:drawable/btn_dropdown" />
 
     </LinearLayout>
 

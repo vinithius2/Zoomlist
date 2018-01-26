@@ -6,11 +6,8 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,19 +21,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
+
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
-import java.text.DecimalFormat;
 import br.com.calculafeira.calculafeira.Adapter.AdapterProductData;
 import br.com.calculafeira.calculafeira.DialogFragment.DialogFragmentConfig;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
+import br.com.calculafeira.calculafeira.Util.Helpers;
 
 public class MainList extends AppCompatActivity implements AbsListView.OnScrollListener {
 
@@ -44,12 +41,11 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
     View mContainerHeader;
     FloatingActionButton fab;
     ObjectAnimator fade;
-    TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene, porcentLimpeza, estimate;
+    TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida,
+            porcentHigiene, porcentLimpeza, estimate;
     TableRow tableRowAlimento, tableRowBebida, tableRowHigiene, tableRowLimpeza;
     ListView listView;
-    DecimalFormat maskMoney;
 
-    private SharedPreferences mySharedPreferences;
     private Context context = this;
     private ArrayAdapter<ProductData> productDataAdapter;
 
@@ -66,9 +62,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         listView = (ListView) findViewById(R.id.listview);
 
-
         if (mToolbar != null) {
-            mToolbar.setTitle(getString(R.string.value_default));
             setSupportActionBar(mToolbar);
             totalPrice = (TextView) mToolbar.findViewById(R.id.textView_total_price);
             totalQuantity = (TextView) mToolbar.findViewById(R.id.textView_total_quantity);
@@ -99,7 +93,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         tableRowBebida = (TableRow) headerView.findViewById(R.id.tableRow_bebidas);
         tableRowHigiene = (TableRow) headerView.findViewById(R.id.tableRow_higiene);
         tableRowLimpeza = (TableRow) headerView.findViewById(R.id.tableRow_limpeza);
-/**
+
         tableRowAlimento.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -140,7 +134,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 return false;
             }
         });
-**/
+
         // prepare the fade in/out animator
         fade = ObjectAnimator.ofFloat(mContainerHeader, "alpha", 0f, 1f);
         fade.setInterpolator(new DecelerateInterpolator());
@@ -149,25 +143,22 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         listView.setOnScrollListener(this);
         populaAdapter();
 
-
         fab = (FloatingActionButton) findViewById(R.id.add_product);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainList.this, ProductCreate.class);
+                Intent intent = new Intent(MainList.this, ProductCreateEdit.class);
                 startActivity(intent);
             }
         });
     }
 
     private void populaAdapter(){
-
         productDataAdapter = new AdapterProductData(
                 this,
                 R.layout.adapter_product_data,
                 DataManager.getInstance().getProductDataDAO().getListProductDatas(),
                 totalPrice,
-                totalQuantity,
                 porcentAlimento,
                 porcentBebida,
                 porcentHigiene,
@@ -176,9 +167,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 estimate,
                 mToolbar
         );
-
         listView.setAdapter(productDataAdapter);
-        productDataAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -293,16 +282,8 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                         for (ProductData p : DataManager.getInstance().getProductDataDAO().getListProductDatas()) {
                             DataManager.getInstance().getProductDataDAO().delete(p);
                         }
-                        mToolbar.setTitle(getResources().getString(R.string.value_default));
-                        totalPrice.setText(getResources().getString(R.string.value_default));
-                        porcentAlimento.setText(getResources().getString(R.string.porcent_zero));
-                        porcentBebida.setText(getResources().getString(R.string.porcent_zero));
-                        porcentHigiene.setText(getResources().getString(R.string.porcent_zero));
-                        porcentLimpeza.setText(getResources().getString(R.string.porcent_zero));
-                        totalQuantity.setText(getResources().getString(R.string.no_products));
-                        estimate.setTextColor(context.getResources().getColor(R.color.colorWhite));
-                        estimate.setTypeface(Typeface.DEFAULT);
-                        estimate.setTextSize(10);
+                        Helpers.setAtualizarDadosInicial(context, totalPrice, porcentAlimento, porcentBebida,
+                                porcentHigiene, porcentLimpeza, totalQuantity, estimate, mToolbar);
                         populaAdapter();
                     }
                 });

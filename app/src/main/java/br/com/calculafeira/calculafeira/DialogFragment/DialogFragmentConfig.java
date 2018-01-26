@@ -7,19 +7,19 @@ package br.com.calculafeira.calculafeira.DialogFragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import br.com.calculafeira.calculafeira.Model.ProductData;
-import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
 
 /**
@@ -27,8 +27,8 @@ import br.com.calculafeira.calculafeira.R;
  */
 public class DialogFragmentConfig extends DialogFragment {
 
-    Button fechar;
-    TextView developer, versionApp, contact, about, socialNetworksApp, socialNetworksDeveloper;
+    TextView versionApp, about;
+    ImageButton personal_email, personal_linkedin, app_facebook, app_instagran, app_youtube;
     PackageInfo packageInfo;
 
     @Override
@@ -44,37 +44,82 @@ public class DialogFragmentConfig extends DialogFragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_config, null);
-        developer = (TextView) view.findViewById(R.id.txt_developer_input);
+        View view = inflater.inflate(R.layout.dialog_about, null);
         versionApp = (TextView) view.findViewById(R.id.txt_version_app_input);
-        contact = (TextView) view.findViewById(R.id.txt_contact_input);
         about = (TextView) view.findViewById(R.id.txt_about_input);
-        socialNetworksApp = (TextView) view.findViewById(R.id.txt_redes_sociais_app_input);
-        socialNetworksDeveloper = (TextView) view.findViewById(R.id.txt_redes_sociais_developer_input);
+        personal_email = (ImageButton) view.findViewById(R.id.btn_gmail_pessoal);
+        personal_linkedin = (ImageButton) view.findViewById(R.id.btn_linkedin_pessoal);
+        app_facebook = (ImageButton) view.findViewById(R.id.btn_facebook_app);
+        app_instagran = (ImageButton) view.findViewById(R.id.btn_instagran_app);
+        app_youtube = (ImageButton) view.findViewById(R.id.btn_youtube_app);
 
-        developer.setText("Marcos Vinithius Melo Filho");
-        versionApp.setText("1.0");
-        contact.setText("marcos.vinithius@gmail.com");
-        about.setText("Este ap epwofkpwekf pwoef powekf powekfp kwefpo kwepof kwepofk wpeofk wepofkwe pofkwepok");
-        socialNetworksApp.setText("Facebook, Instagran");
-        socialNetworksDeveloper.setText("Facebook, Instagran");
+        versionApp.setText(packageInfo.versionName);
+        about.setText(getResources().getText(R.string.about_text_app));
 
-        fechar = (Button) view.findViewById(R.id.btnFechar);
-
-        fechar.setOnClickListener(new View.OnClickListener() {
+        personal_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                String email = String.valueOf(getResources().getText(R.string.personal_email));
+                String subject = String.valueOf(getResources().getText(R.string.subject_email));
+                Intent i = new Intent(Intent.ACTION_SENDTO);
+                i.setData(Uri.parse("mailto:"));
+                i.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{ email });
+                i.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+                startActivity(Intent.createChooser(i, "Send email"));
+            }
+        });
+        personal_email.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Snackbar.make(v, getResources().getText(R.string.personal_email), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
+        });
+        personal_linkedin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String uri = String.valueOf(getResources().getText(R.string.personal_uri_linkedin));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(browserIntent);
+            }
+        });
+        personal_linkedin.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Snackbar.make(v, getResources().getText(R.string.personal_name), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
+        });
+        app_facebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, getResources().getString(R.string.em_breve), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        app_instagran.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, getResources().getString(R.string.em_breve), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        app_youtube.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar.make(v, getResources().getString(R.string.em_breve), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
         builder.setView(view);
-
         return builder.create();
     }
-
 }
