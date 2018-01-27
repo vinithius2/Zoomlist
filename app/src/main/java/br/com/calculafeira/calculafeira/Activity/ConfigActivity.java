@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import br.com.calculafeira.calculafeira.Util.Helpers;
 
@@ -25,6 +26,7 @@ public class ConfigActivity extends AppCompatActivity {
     private Context context = this;
     private SharedPreferences mySharedPreferences;
     private EditText editTextEstimate;
+    private CheckBox checkBoxEstimate, checkBoxQuantity, checkBoxPorcent;
     private String current = "";
 
     @Override
@@ -41,6 +43,55 @@ public class ConfigActivity extends AppCompatActivity {
                     Double.parseDouble(mySharedPreferences.getString("estimate", ""))
             )));
         }
+
+
+        checkBoxEstimate = (CheckBox)findViewById(R.id.checkBoxEstimate);
+        checkBoxPorcent = (CheckBox)findViewById(R.id.checkBoxPorcent);
+        checkBoxQuantity = (CheckBox)findViewById(R.id.checkBoxQuantity);
+        atualizarCheckBoxs(checkBoxEstimate, checkBoxQuantity, checkBoxPorcent);
+
+        checkBoxEstimate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mySharedPreferences = context.getSharedPreferences("checkBoxEstimate", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mySharedPreferences.edit();
+                if (((CheckBox) v).isChecked()) {
+                    editor.putBoolean("checkBoxEstimate", true);
+                    editor.apply();
+                } else {
+                    editor.putBoolean("checkBoxEstimate", false);
+                    editor.apply();
+                }
+            }
+        });
+        checkBoxQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mySharedPreferences = context.getSharedPreferences("checkBoxQuantity", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mySharedPreferences.edit();
+                if (((CheckBox) v).isChecked()) {
+                    editor.putBoolean("checkBoxQuantity", true);
+                    editor.apply();
+                } else {
+                    editor.putBoolean("checkBoxQuantity", false);
+                    editor.apply();
+                }
+            }
+        });
+        checkBoxPorcent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mySharedPreferences = context.getSharedPreferences("checkBoxPorcent", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mySharedPreferences.edit();
+                if (((CheckBox) v).isChecked()) {
+                    editor.putBoolean("checkBoxPorcent", true);
+                    editor.apply();
+                } else {
+                    editor.putBoolean("checkBoxPorcent", false);
+                    editor.apply();
+                }
+            }
+        });
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,5 +146,19 @@ public class ConfigActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private void atualizarCheckBoxs(CheckBox checkBoxEstimate, CheckBox checkBoxQuantity, CheckBox checkBoxPorcent){
+        mySharedPreferences = context.getSharedPreferences("checkBoxEstimate", Context.MODE_PRIVATE);
+        Boolean value01 = mySharedPreferences.getBoolean("checkBoxEstimate", false);
+        checkBoxEstimate.setChecked(value01);
+
+        mySharedPreferences = context.getSharedPreferences("checkBoxQuantity", Context.MODE_PRIVATE);
+        Boolean value02 = mySharedPreferences.getBoolean("checkBoxQuantity", false);
+        checkBoxQuantity.setChecked(value02);
+
+        mySharedPreferences = context.getSharedPreferences("checkBoxPorcent", Context.MODE_PRIVATE);
+        Boolean value03 = mySharedPreferences.getBoolean("checkBoxPorcent", false);
+        checkBoxPorcent.setChecked(value03);
     }
 }

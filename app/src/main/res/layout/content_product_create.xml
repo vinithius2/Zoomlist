@@ -65,11 +65,11 @@
             </android.support.design.widget.TextInputLayout>
 
         </TableRow>
+
         <Spinner
             android:id="@+id/spinner_category_product"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@android:drawable/btn_dropdown" />
+            android:layout_height="50dp" />
 
     </LinearLayout>
 

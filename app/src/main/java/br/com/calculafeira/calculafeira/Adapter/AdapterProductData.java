@@ -3,6 +3,7 @@ package br.com.calculafeira.calculafeira.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -43,6 +45,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
     private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene,
             porcentLimpeza, estimate;
     private Toolbar mToolbar;
+    private LinearLayout linearLayoutPorcent;
 
     public AdapterProductData(Context context,
                               int resource,
@@ -54,6 +57,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
                               TextView porcentLimpeza,
                               TextView totalQuantity,
                               TextView estimate,
+                              LinearLayout linearLayoutPorcent,
                               Toolbar mToolbar) {
 
         super(context, resource, productDatas);
@@ -69,6 +73,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         this.estimate = estimate;
         this.context = context;
         this.mToolbar = mToolbar;
+        this.linearLayoutPorcent = linearLayoutPorcent;
         setQuantityAndTotalMoney(productDatas);
     }
 
@@ -77,7 +82,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
         }
-
+        setConfig();
         final ProductData productData = productDatas.get(position);
         final ImageButton imageButtonEdit = (ImageButton) convertView.findViewById(R.id.btn_edit);
         final ImageButton imageButtonDelete = (ImageButton) convertView.findViewById(R.id.btn_delete);
@@ -254,5 +259,27 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
                 break;
         }
         return drawable;
+    }
+
+    private void setConfig(){
+        SharedPreferences mySharedPreferences;
+        mySharedPreferences = context.getSharedPreferences("checkBoxEstimate", Context.MODE_PRIVATE);
+        Boolean value01 = mySharedPreferences.getBoolean("checkBoxEstimate", false);
+        estimate.setVisibility(View.VISIBLE);
+        if(!value01){
+            estimate.setVisibility(View.GONE);
+        }
+        mySharedPreferences = context.getSharedPreferences("checkBoxQuantity", Context.MODE_PRIVATE);
+        Boolean value02 = mySharedPreferences.getBoolean("checkBoxQuantity", false);
+        totalQuantity.setVisibility(View.VISIBLE);
+        if(!value02){
+            totalQuantity.setVisibility(View.GONE);
+        }
+        mySharedPreferences = context.getSharedPreferences("checkBoxPorcent", Context.MODE_PRIVATE);
+        Boolean value03 = mySharedPreferences.getBoolean("checkBoxPorcent", false);
+        linearLayoutPorcent.setVisibility(View.VISIBLE);
+        if(!value03){
+            linearLayoutPorcent.setVisibility(View.GONE);
+        }
     }
 }

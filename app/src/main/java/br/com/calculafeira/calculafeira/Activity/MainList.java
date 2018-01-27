@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
     TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida,
             porcentHigiene, porcentLimpeza, estimate;
     TableRow tableRowAlimento, tableRowBebida, tableRowHigiene, tableRowLimpeza;
+    LinearLayout linearLayoutPorcent;
     ListView listView;
 
     private Context context = this;
@@ -75,6 +77,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
             tableRowBebida = (TableRow) mToolbar.findViewById(R.id.tableRow_bebidas);
             tableRowHigiene = (TableRow) mToolbar.findViewById(R.id.tableRow_higiene);
             tableRowLimpeza = (TableRow) mToolbar.findViewById(R.id.tableRow_limpeza);
+            linearLayoutPorcent = (LinearLayout) mToolbar.findViewById(R.id.LinearLayoutPorcent);
         }
 
         // Inflate the header view and attach it to the ListView
@@ -93,6 +96,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         tableRowBebida = (TableRow) headerView.findViewById(R.id.tableRow_bebidas);
         tableRowHigiene = (TableRow) headerView.findViewById(R.id.tableRow_higiene);
         tableRowLimpeza = (TableRow) headerView.findViewById(R.id.tableRow_limpeza);
+        linearLayoutPorcent = (LinearLayout) headerView.findViewById(R.id.LinearLayoutPorcent);
 
         tableRowAlimento.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -165,6 +169,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 porcentLimpeza,
                 totalQuantity,
                 estimate,
+                linearLayoutPorcent,
                 mToolbar
         );
         listView.setAdapter(productDataAdapter);

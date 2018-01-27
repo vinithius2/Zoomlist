@@ -10,7 +10,7 @@
         android:id="@+id/action_estimate"
         android:orderInCategory="100"
         android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/estimate" />
+        android:title="@string/config" />
     <item
         android:id="@+id/action_about"
         android:orderInCategory="100"

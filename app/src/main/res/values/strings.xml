@@ -52,4 +52,8 @@
     <string name="subject_email">Calcula Feira App - Contato usuário</string>
     <string name="personal_uri_linkedin">https://www.linkedin.com/in/marcos-vinithius-melo-filho-8a0a844b/</string>
     <string name="about_text_app">O aplicativo Calcula Feira foi desenvolvido com a intenção de facilitar a vida de quem vai muito ao supermercado e não consegue administrar as suas compras, esqueça de vez o papel e a caneta e use uma ferramenta inteligente para te deixar tranquilo respeitando sempre o seu orçamento e te trazendo todo o feedback possível.</string>
+    <string name="txtCheckBoxEstimate">Exibir orçamento</string>
+    <string name="txtCheckBoxQuantity">Exibir quantidade de produtos</string>
+    <string name="txtCheckBoxPorcent">Exibir porcentagem de categorias</string>
+    <string name="txtTitleCheckBoxInicial">Configuração de tela inicial</string>
 </resources>
