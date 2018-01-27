@@ -6,7 +6,6 @@
     android:orientation="horizontal">
 
     <ImageView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/imageView_spinner_category"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -14,7 +13,6 @@
         android:src="@drawable/ic_account_balance_wallet" />
 
     <TextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/textView_spinner_category"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

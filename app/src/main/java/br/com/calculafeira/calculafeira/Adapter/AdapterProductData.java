@@ -45,7 +45,6 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
     private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene,
             porcentLimpeza, estimate;
     private Toolbar mToolbar;
-    private LinearLayout linearLayoutPorcent;
 
     public AdapterProductData(Context context,
                               int resource,
@@ -57,7 +56,6 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
                               TextView porcentLimpeza,
                               TextView totalQuantity,
                               TextView estimate,
-                              LinearLayout linearLayoutPorcent,
                               Toolbar mToolbar) {
 
         super(context, resource, productDatas);
@@ -73,7 +71,6 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         this.estimate = estimate;
         this.context = context;
         this.mToolbar = mToolbar;
-        this.linearLayoutPorcent = linearLayoutPorcent;
         setQuantityAndTotalMoney(productDatas);
     }
 
@@ -82,7 +79,6 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
         }
-        setConfig();
         final ProductData productData = productDatas.get(position);
         final ImageButton imageButtonEdit = (ImageButton) convertView.findViewById(R.id.btn_edit);
         final ImageButton imageButtonDelete = (ImageButton) convertView.findViewById(R.id.btn_delete);
@@ -92,16 +88,11 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         final TextView textView_unit_price_product = (TextView) convertView.findViewById(R.id.textView_unit_price_product_adapter);
         final TextView textView_unit = (TextView) convertView.findViewById(R.id.textView_unit);
         final ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView_icon_category);
-
         swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
         swipeLayout.addDrag(SwipeLayout.DragEdge.Left, convertView.findViewById(R.id.bottom_wrapper));
-
-
         CircleButton buttonMais = (CircleButton) convertView.findViewById(R.id.button_mais);
         CircleButton buttonMenos = (CircleButton) convertView.findViewById(R.id.button_menos);
-
         textView_name_product.setText(productData.toString());
-
         setSave(productData, productData.getQuantity(), textView_total_price_product, textView_unit_price_product, textView_unit, imageView);
 
         buttonMais.setOnClickListener(new View.OnClickListener() {
@@ -213,18 +204,18 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
             result = String.valueOf(totalProduct) + " " + context.getResources().getString(R.string.plural_product);
         }
         totalQuantity.setText(result);
+        estimate.setBackground(null);
+        estimate.setTextColor(context.getResources().getColor(R.color.colorWhite));
+        estimate.setTypeface(Typeface.DEFAULT);
+        estimate.setTextSize(12);
         if (Helpers.getEstimate(context) != null){
             Double calc_estimate = Double.parseDouble(Helpers.getEstimate(context)) - totalValue;
             estimate.setText(Helpers.getMonetary(String.valueOf(calc_estimate)));
-            estimate.setBackground(null);
-            estimate.setTextColor(context.getResources().getColor(R.color.colorWhite));
-            estimate.setTypeface(Typeface.DEFAULT);
-            estimate.setTextSize(12);
             if (calc_estimate < 0){
                 estimate.setBackground(context.getResources().getDrawable(R.drawable.background_alert));
             }
         } else {
-            estimate.setVisibility(View.GONE);
+            estimate.setText(Helpers.getMonetary(String.valueOf("000")));
         }
     }
 
@@ -259,27 +250,5 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
                 break;
         }
         return drawable;
-    }
-
-    private void setConfig(){
-        SharedPreferences mySharedPreferences;
-        mySharedPreferences = context.getSharedPreferences("checkBoxEstimate", Context.MODE_PRIVATE);
-        Boolean value01 = mySharedPreferences.getBoolean("checkBoxEstimate", false);
-        estimate.setVisibility(View.VISIBLE);
-        if(!value01){
-            estimate.setVisibility(View.GONE);
-        }
-        mySharedPreferences = context.getSharedPreferences("checkBoxQuantity", Context.MODE_PRIVATE);
-        Boolean value02 = mySharedPreferences.getBoolean("checkBoxQuantity", false);
-        totalQuantity.setVisibility(View.VISIBLE);
-        if(!value02){
-            totalQuantity.setVisibility(View.GONE);
-        }
-        mySharedPreferences = context.getSharedPreferences("checkBoxPorcent", Context.MODE_PRIVATE);
-        Boolean value03 = mySharedPreferences.getBoolean("checkBoxPorcent", false);
-        linearLayoutPorcent.setVisibility(View.VISIBLE);
-        if(!value03){
-            linearLayoutPorcent.setVisibility(View.GONE);
-        }
     }
 }

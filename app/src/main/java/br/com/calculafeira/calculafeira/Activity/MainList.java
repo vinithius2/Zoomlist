@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -49,7 +50,6 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
     ListView listView;
 
     private Context context = this;
-    private ArrayAdapter<ProductData> productDataAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,10 +155,11 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 startActivity(intent);
             }
         });
+        setConfig();
     }
 
     private void populaAdapter(){
-        productDataAdapter = new AdapterProductData(
+        ArrayAdapter<ProductData> productDataAdapter = new AdapterProductData(
                 this,
                 R.layout.adapter_product_data,
                 DataManager.getInstance().getProductDataDAO().getListProductDatas(),
@@ -169,10 +170,31 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 porcentLimpeza,
                 totalQuantity,
                 estimate,
-                linearLayoutPorcent,
                 mToolbar
         );
         listView.setAdapter(productDataAdapter);
+    }
+
+    private void setConfig(){
+        SharedPreferences mySharedPreferences;
+        mySharedPreferences = context.getSharedPreferences("checkBoxEstimate", Context.MODE_PRIVATE);
+        Boolean value01 = mySharedPreferences.getBoolean("checkBoxEstimate", true);
+        estimate.setVisibility(View.VISIBLE);
+        if(!value01){
+            estimate.setVisibility(View.GONE);
+        }
+        mySharedPreferences = context.getSharedPreferences("checkBoxQuantity", Context.MODE_PRIVATE);
+        Boolean value02 = mySharedPreferences.getBoolean("checkBoxQuantity", true);
+        totalQuantity.setVisibility(View.VISIBLE);
+        if(!value02){
+            totalQuantity.setVisibility(View.GONE);
+        }
+        mySharedPreferences = context.getSharedPreferences("checkBoxPorcent", Context.MODE_PRIVATE);
+        Boolean value03 = mySharedPreferences.getBoolean("checkBoxPorcent", true);
+        linearLayoutPorcent.setVisibility(View.VISIBLE);
+        if(!value03){
+            linearLayoutPorcent.setVisibility(View.GONE);
+        }
     }
 
     @Override

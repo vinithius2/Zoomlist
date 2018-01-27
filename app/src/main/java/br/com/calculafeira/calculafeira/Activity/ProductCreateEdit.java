@@ -1,5 +1,6 @@
 package br.com.calculafeira.calculafeira.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,22 +11,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.calculafeira.calculafeira.Adapter.AdapterSpinnerCategory;
 import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
+import br.com.calculafeira.calculafeira.Adapter.CustomAdapter;
 import br.com.calculafeira.calculafeira.Util.Helpers;
-import br.com.calculafeira.calculafeira.Util.ItemData;
 
 public class ProductCreateEdit extends AppCompatActivity {
 
@@ -33,6 +31,7 @@ public class ProductCreateEdit extends AppCompatActivity {
     Spinner category_product;
     ProductData productData;
     Product product;
+    private Context context = this;
     private String current = "";
 
     @Override
@@ -50,21 +49,11 @@ public class ProductCreateEdit extends AppCompatActivity {
         category_product = (Spinner)findViewById(R.id.spinner_category_product);
 
         String[] categories = getResources().getStringArray(R.array.categories);
-        Integer[] images = { 0, R.drawable.ico_alimento, R.drawable.ico_bebida,
+        Integer[] images = {R.drawable.ico_alimento, R.drawable.ico_bebida,
                 R.drawable.ico_limpeza, R.drawable.ico_higiene };
 
-        ArrayList<ItemData> list = new ArrayList<>();
-        for (int i = 0; i < list.size();i++) {
-            list.add(new ItemData(categories[i],images[i]));
-        }
-
-        AdapterSpinnerCategory adapter = new AdapterSpinnerCategory(
-                this,
-                R.layout.adapter_spinner_category,
-                R.id.textView_spinner_category,
-                list
-        );
-        category_product.setAdapter(adapter);
+        CustomAdapter customAdapter = new CustomAdapter(context, images, categories);
+        category_product.setAdapter(customAdapter);
 
         setTitle(R.string.cadastrar_produto);
         if (getIntent().hasExtra("productData")) {

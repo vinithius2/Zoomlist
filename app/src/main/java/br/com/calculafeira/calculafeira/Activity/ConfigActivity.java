@@ -38,12 +38,12 @@ public class ConfigActivity extends AppCompatActivity {
         editTextEstimate = (EditText)findViewById(R.id.edit_text_estimate);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
+        editTextEstimate.setText(Helpers.getMonetary("000"));
         if (!mySharedPreferences.getString("estimate", "").isEmpty()){
             editTextEstimate.setText(Helpers.getMonetary(String.valueOf(
                     Double.parseDouble(mySharedPreferences.getString("estimate", ""))
             )));
         }
-
 
         checkBoxEstimate = (CheckBox)findViewById(R.id.checkBoxEstimate);
         checkBoxPorcent = (CheckBox)findViewById(R.id.checkBoxPorcent);
@@ -150,15 +150,15 @@ public class ConfigActivity extends AppCompatActivity {
 
     private void atualizarCheckBoxs(CheckBox checkBoxEstimate, CheckBox checkBoxQuantity, CheckBox checkBoxPorcent){
         mySharedPreferences = context.getSharedPreferences("checkBoxEstimate", Context.MODE_PRIVATE);
-        Boolean value01 = mySharedPreferences.getBoolean("checkBoxEstimate", false);
+        Boolean value01 = mySharedPreferences.getBoolean("checkBoxEstimate", true);
         checkBoxEstimate.setChecked(value01);
 
         mySharedPreferences = context.getSharedPreferences("checkBoxQuantity", Context.MODE_PRIVATE);
-        Boolean value02 = mySharedPreferences.getBoolean("checkBoxQuantity", false);
+        Boolean value02 = mySharedPreferences.getBoolean("checkBoxQuantity", true);
         checkBoxQuantity.setChecked(value02);
 
         mySharedPreferences = context.getSharedPreferences("checkBoxPorcent", Context.MODE_PRIVATE);
-        Boolean value03 = mySharedPreferences.getBoolean("checkBoxPorcent", false);
+        Boolean value03 = mySharedPreferences.getBoolean("checkBoxPorcent", true);
         checkBoxPorcent.setChecked(value03);
     }
 }

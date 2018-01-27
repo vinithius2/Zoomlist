@@ -31,8 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:background="@color/colorBlue"
-        android:backgroundTint="@color/colorBlue"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@drawable/ic_action_save" />
 
 </android.support.design.widget.CoordinatorLayout>
