@@ -85,9 +85,18 @@ public class DialogFragmentConfig extends DialogFragment {
         app_facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri = String.valueOf(getResources().getText(R.string.app_uri_facebook));
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(browserIntent);
+
+                try {
+                    getContext().getPackageManager().getPackageInfo("com.facebook.katana", 0);
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(
+                            String.valueOf(getResources().getText(R.string.app_uri_facebook)))
+                    );
+                    startActivity(intent);
+                } catch (PackageManager.NameNotFoundException e) {
+                    String uri = String.valueOf(getResources().getText(R.string.url_uri_facebook));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    startActivity(browserIntent);
+                }
             }
         });
         app_youtube.setOnClickListener(new View.OnClickListener() {
