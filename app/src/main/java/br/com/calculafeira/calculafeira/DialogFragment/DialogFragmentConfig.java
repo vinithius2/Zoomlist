@@ -74,14 +74,6 @@ public class DialogFragmentConfig extends DialogFragment {
                 startActivity(Intent.createChooser(i, "Send email"));
             }
         });
-        personal_email.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Snackbar.make(v, getResources().getText(R.string.personal_email), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                return false;
-            }
-        });
         personal_linkedin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,26 +82,12 @@ public class DialogFragmentConfig extends DialogFragment {
                 startActivity(browserIntent);
             }
         });
-        personal_linkedin.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Snackbar.make(v, getResources().getText(R.string.personal_name), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                return false;
-            }
-        });
         app_facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, getResources().getString(R.string.em_breve), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        app_instagran.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Snackbar.make(v, getResources().getString(R.string.em_breve), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                String uri = String.valueOf(getResources().getText(R.string.app_uri_facebook));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                startActivity(browserIntent);
             }
         });
         app_youtube.setOnClickListener(new View.OnClickListener() {
@@ -119,6 +97,11 @@ public class DialogFragmentConfig extends DialogFragment {
                         .setAction("Action", null).show();
             }
         });
+
+        //Ainda por criar contas...
+        app_instagran.setVisibility(View.GONE);
+        app_youtube.setVisibility(View.GONE);
+
         builder.setView(view);
         return builder.create();
     }

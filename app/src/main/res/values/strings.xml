@@ -3,6 +3,7 @@
     <string name="action_settings">Configuração</string>
     <string name="value_default">R$0,00</string>
     <string name="count_produtos">Quantos produtos?</string>
+    <string name="info_list">Cadê os produtos?</string>
     <string name="name_product">Nome do produto</string>
     <string name="price_product">Preço</string>
     <string name="mais">+</string>
@@ -49,6 +50,7 @@
     <string name="personal_email">marcos.vinithius@gmail.com</string>
     <string name="subject_email">Calcula Feira App - Contato usuário</string>
     <string name="personal_uri_linkedin">https://www.linkedin.com/in/marcos-vinithius-melo-filho-8a0a844b/</string>
+    <string name="app_uri_facebook">https://www.facebook.com/Zoomlist-331549607350902/</string>
     <string name="about_text_app">O aplicativo Zoomlist foi desenvolvido com a intenção de facilitar a vida de quem vai muito ao supermercado e não consegue administrar as suas compras, esqueça de vez o papel e a caneta e use uma ferramenta inteligente para te deixar tranquilo respeitando sempre o seu orçamento e te trazendo todo o feedback possível.</string>
     <string name="txtCheckBoxEstimate">Exibir orçamento</string>
     <string name="txtCheckBoxQuantity">Exibir quantidade de produtos</string>

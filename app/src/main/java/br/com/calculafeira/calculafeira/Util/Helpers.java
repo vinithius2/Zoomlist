@@ -33,14 +33,16 @@ public class Helpers {
                                       TextView estimate,
                                       Toolbar mToolbar) {
 
-        mToolbar.setTitle(context.getResources().getString(R.string.value_default));
-        totalPrice.setText(context.getResources().getString(R.string.value_default));
+        String defaultMoney = context.getResources().getString(R.string.value_default);
+        String defaultPorcent = context.getResources().getString(R.string.porcent_zero);
+        mToolbar.setTitle(defaultMoney);
+        totalPrice.setText(defaultMoney);
         porcentAlimento.setText(context.getResources().getString(R.string.porcent_zero));
-        porcentBebida.setText(context.getResources().getString(R.string.porcent_zero));
-        porcentHigiene.setText(context.getResources().getString(R.string.porcent_zero));
-        porcentLimpeza.setText(context.getResources().getString(R.string.porcent_zero));
+        porcentBebida.setText(defaultPorcent);
+        porcentHigiene.setText(defaultPorcent);
+        porcentLimpeza.setText(defaultPorcent);
         totalQuantity.setText(context.getResources().getString(R.string.no_products));
-        estimate.setText(Helpers.getMonetary(String.valueOf(getEstimate(context))));
+        estimate.setText(defaultMoney);
         estimate.setBackground(null);
         estimate.setTextColor(context.getResources().getColor(R.color.colorWhite));
         estimate.setTypeface(Typeface.DEFAULT);

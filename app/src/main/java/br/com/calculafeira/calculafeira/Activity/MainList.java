@@ -44,7 +44,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
     FloatingActionButton fab;
     ObjectAnimator fade;
     TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida,
-            porcentHigiene, porcentLimpeza, estimate;
+            porcentHigiene, porcentLimpeza, estimate, textViewWhereProduct;
     TableRow tableRowAlimento, tableRowBebida, tableRowHigiene, tableRowLimpeza;
     LinearLayout linearLayoutPorcent;
     ListView listView;
@@ -155,6 +155,7 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 startActivity(intent);
             }
         });
+
         setConfig();
     }
 
@@ -333,5 +334,10 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do nothing.
     }
 }
