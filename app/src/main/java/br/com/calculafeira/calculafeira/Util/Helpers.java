@@ -6,7 +6,14 @@ import android.graphics.Typeface;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Currency;
+import java.util.Locale;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import br.com.calculafeira.calculafeira.R;
 
@@ -17,6 +24,7 @@ import br.com.calculafeira.calculafeira.R;
 public class Helpers {
 
     private static SharedPreferences mySharedPreferences;
+    public static SortedMap<Currency, Locale> currencyLocaleMap;
 
     public static String getMonetary(String money){
         double parsed = Double.parseDouble(money);
@@ -53,5 +61,35 @@ public class Helpers {
         mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
         String value = mySharedPreferences.getString("estimate", "");
         return !value.isEmpty() && !value.equals("000") ? value : null;
+    }
+
+
+    public static String getCurrencySymbol(String currencyCode) {
+        currencyLocaleMap = new TreeMap<>(new Comparator<Currency>() {
+            public int compare(Currency c1, Currency c2) {
+                return c1.getCurrencyCode().compareTo(c2.getCurrencyCode());
+            }
+        });
+        for (Locale locale : Locale.getAvailableLocales()) {
+            try {
+                Currency currency = Currency.getInstance(locale);
+                currencyLocaleMap.put(currency, locale);
+            } catch (Exception e) {
+            }
+        }
+        Currency currency = Currency.getInstance(currencyCode);
+        System.out.println(currencyCode + ":-" + currency.getSymbol(currencyLocaleMap.get(currency)));
+        return currency.getSymbol(currencyLocaleMap.get(currency));
+    }
+
+    public static String getClearBlank(String cleanString) {
+        char[] aux = cleanString.toCharArray();
+        String value = "";
+        for (int i = 0; i < aux.length; i++) {
+            if (Character.isDigit(aux[i])) {
+                value += aux[i];
+            }
+        }
+        return value;
     }
 }

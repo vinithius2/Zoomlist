@@ -140,4 +140,9 @@ public class ConfigActivity extends AppCompatActivity {
             editor.apply();
         }
     }
+
+    public void onBackPressed() {
+        Intent intent = new Intent(ConfigActivity.this, MainList.class);
+        startActivity(intent);
+    }
 }

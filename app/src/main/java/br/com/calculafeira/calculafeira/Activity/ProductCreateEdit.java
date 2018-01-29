@@ -16,7 +16,12 @@ import android.widget.Spinner;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Currency;
 import java.util.List;
+import java.util.Locale;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
@@ -82,7 +87,16 @@ public class ProductCreateEdit extends AppCompatActivity {
                     product.setNameProduct(name_product.getText().toString());
                     Long idProduct = DataManager.getInstance().getProductDAO().save(product);
                     productData.setFkProduct(idProduct);
-                    productData.setPrice(Double.parseDouble(price_product.getText().toString().replaceAll("[R$,.]", "")));
+
+                    String monetarySymbol = Helpers.getCurrencySymbol(
+                            Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode()
+                    );
+
+                    String cleanString = Helpers.getClearBlank(
+                            price_product.getText().toString().replaceAll("[" + monetarySymbol + ",.]", "")
+                    );
+
+                    productData.setPrice(Double.parseDouble(cleanString));
                     productData.setQuantity(0);
                     Long idProductData = DataManager.getInstance().getProductDataDAO().save(productData);
 
@@ -116,9 +130,10 @@ public class ProductCreateEdit extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!s.toString().equals(current)){
                     price_product.removeTextChangedListener(this);
-
-                    String cleanString = s.toString().replaceAll("[R$,.]", "");
-
+                    Locale.getDefault().getDisplayLanguage();
+                    String monetarySymbol = Helpers.getCurrencySymbol(Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode());
+                    String cleanString = s.toString().replaceAll("[" + monetarySymbol + ",.]", "");
+                    cleanString = Helpers.getClearBlank(cleanString);
                     double parsed = Double.parseDouble(cleanString);
                     String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
 
@@ -138,5 +153,11 @@ public class ProductCreateEdit extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(ProductCreateEdit.this, MainList.class);
+        startActivity(intent);
     }
 }
