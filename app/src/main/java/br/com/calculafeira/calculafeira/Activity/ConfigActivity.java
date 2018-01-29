@@ -16,6 +16,7 @@ import android.widget.EditText;
 import br.com.calculafeira.calculafeira.Util.Helpers;
 
 import java.text.NumberFormat;
+import java.util.Currency;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -70,7 +71,9 @@ public class ConfigActivity extends AppCompatActivity {
                 if(!s.toString().equals(current)){
                     editTextEstimate.removeTextChangedListener(this);
 
-                    String cleanString = s.toString().replaceAll("[R$,.]", "");
+                    String monetarySymbol = Helpers.getCurrencySymbol(Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode());
+                    String cleanString = s.toString().replaceAll("[" + monetarySymbol + ",.]", "");
+                    cleanString = Helpers.getClearBlank(cleanString);
 
                     double parsed = Double.parseDouble(cleanString);
                     String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
@@ -91,7 +94,15 @@ public class ConfigActivity extends AppCompatActivity {
                 if (!Objects.equals(value, "")){
                     mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = mySharedPreferences.edit();
-                    editor.putString("estimate", String.valueOf(value).replaceAll("[R$,.]", ""));
+                    String monetarySymbol = Helpers.getCurrencySymbol(
+                            Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode()
+                    );
+
+                    String cleanString = Helpers.getClearBlank(
+                            value.replaceAll("[" + monetarySymbol + ",.]", "")
+                    );
+
+                    editor.putString("estimate", cleanString);
                     editor.apply();
 
                     addValueCheckBox(CHECK_BOX_ESTIMATE, checkBoxEstimate);

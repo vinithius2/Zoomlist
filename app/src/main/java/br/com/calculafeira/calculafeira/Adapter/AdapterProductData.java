@@ -40,6 +40,7 @@ import br.com.calculafeira.calculafeira.Util.Helpers;
 public class AdapterProductData extends ArrayAdapter<ProductData> {
 
     private final int resourceId;
+    private Double totalValue;
     private ArrayList<ProductData> productDatas;
     private Context context;
     private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene,
@@ -159,7 +160,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
     }
 
     private void setQuantityAndTotalMoney(ArrayList<ProductData> productDatas){
-        Double totalValue = 0d;
+        totalValue = 0d;
         int totalProduct = 0;
         float quantityAlimentos = 0f;
         float quantityBebidas = 0f;

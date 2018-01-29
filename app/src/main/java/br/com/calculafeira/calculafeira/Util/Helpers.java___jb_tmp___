@@ -41,7 +41,7 @@ public class Helpers {
                                       TextView estimate,
                                       Toolbar mToolbar) {
 
-        String defaultMoney = Helpers.getMonetary(String.valueOf(000));
+        String defaultMoney = Helpers.getMonetary("000");
         String defaultPorcent = context.getResources().getString(R.string.porcent_zero);
         mToolbar.setTitle(defaultMoney);
         totalPrice.setText(defaultMoney);

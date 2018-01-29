@@ -49,6 +49,8 @@ public class ProductCreateEdit extends AppCompatActivity {
         product = new Product();
         productData = new ProductData();
 
+        productData.setQuantity(0);
+
         name_product = (EditText)findViewById(R.id.edit_text_name_product);
         price_product = (EditText)findViewById(R.id.edit_text_price_product);
         category_product = (Spinner)findViewById(R.id.spinner_category_product);
@@ -97,7 +99,7 @@ public class ProductCreateEdit extends AppCompatActivity {
                     );
 
                     productData.setPrice(Double.parseDouble(cleanString));
-                    productData.setQuantity(0);
+
                     Long idProductData = DataManager.getInstance().getProductDataDAO().save(productData);
 
                     Intent intent = new Intent(ProductCreateEdit.this, MainList.class);
@@ -130,7 +132,7 @@ public class ProductCreateEdit extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!s.toString().equals(current)){
                     price_product.removeTextChangedListener(this);
-                    Locale.getDefault().getDisplayLanguage();
+                    //Locale.getDefault().getDisplayLanguage();
                     String monetarySymbol = Helpers.getCurrencySymbol(Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode());
                     String cleanString = s.toString().replaceAll("[" + monetarySymbol + ",.]", "");
                     cleanString = Helpers.getClearBlank(cleanString);
