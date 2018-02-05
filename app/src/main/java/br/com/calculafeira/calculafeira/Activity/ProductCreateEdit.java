@@ -16,18 +16,14 @@ import android.widget.Spinner;
 
 import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.Currency;
 import java.util.List;
-import java.util.Locale;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
+import br.com.calculafeira.calculafeira.Adapter.CustomAdapter;
 import br.com.calculafeira.calculafeira.Model.Product;
 import br.com.calculafeira.calculafeira.Model.ProductData;
 import br.com.calculafeira.calculafeira.Persistence.DataManager;
 import br.com.calculafeira.calculafeira.R;
-import br.com.calculafeira.calculafeira.Adapter.CustomAdapter;
 import br.com.calculafeira.calculafeira.Util.Helpers;
 
 public class ProductCreateEdit extends AppCompatActivity {

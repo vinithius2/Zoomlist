@@ -3,7 +3,6 @@ package br.com.calculafeira.calculafeira.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.daimajia.swipe.SwipeLayout;
@@ -46,6 +44,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
     private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene,
             porcentLimpeza, estimate;
     private Toolbar mToolbar;
+    private ArrayList<String> namesCategoryAux = null;
 
     public AdapterProductData(Context context,
                               int resource,
@@ -72,7 +71,8 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         this.estimate = estimate;
         this.context = context;
         this.mToolbar = mToolbar;
-        setQuantityAndTotalMoney(productDatas);
+        namesCategoryAux = getNamesCategory(productDatas);
+        setQuantityAndTotalMoney(productDatas, namesCategoryAux);
     }
 
     @Override
@@ -94,15 +94,25 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         CircleButton buttonMais = (CircleButton) convertView.findViewById(R.id.button_mais);
         CircleButton buttonMenos = (CircleButton) convertView.findViewById(R.id.button_menos);
         textView_name_product.setText(productData.toString());
-        setSave(productData, productData.getQuantity(), textView_total_price_product, textView_unit_price_product, textView_unit, imageView);
+        setSave(productData,
+                productData.getQuantity(),
+                namesCategoryAux,
+                textView_total_price_product,
+                textView_unit_price_product,
+                textView_unit, imageView
+        );
 
         buttonMais.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                setSave(productData, ++quantity,
-                        textView_total_price_product, textView_unit_price_product,
-                        textView_unit, imageView
+                setSave(productData,
+                        ++quantity,
+                        namesCategoryAux,
+                        textView_total_price_product,
+                        textView_unit_price_product,
+                        textView_unit,
+                        imageView
                 );
             }
         });
@@ -110,9 +120,13 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
             @Override
             public void onClick(View v) {
                 int quantity = productData.getQuantity();
-                setSave(productData, --quantity,
-                        textView_total_price_product, textView_unit_price_product,
-                        textView_unit, imageView
+                setSave(productData,
+                        --quantity,
+                        namesCategoryAux,
+                        textView_total_price_product,
+                        textView_unit_price_product,
+                        textView_unit,
+                        imageView
                 );
             }
         });
@@ -159,9 +173,18 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         return convertView;
     }
 
-    private void setQuantityAndTotalMoney(ArrayList<ProductData> productDatas){
+    private ArrayList<String> getNamesCategory(ArrayList<ProductData> productData){
+        ArrayList<String> namesCategory = new ArrayList<String>();
+        for(ProductData p : productDatas){
+            namesCategory.add(p.getProduct().getNameCategory());
+        }
+        return namesCategory;
+    }
+
+    private void setQuantityAndTotalMoney(ArrayList<ProductData> productDatas, ArrayList<String> namesCategoryAux){
         totalValue = 0d;
         int totalProduct = 0;
+        int i = 0;
         float quantityAlimentos = 0f;
         float quantityBebidas = 0f;
         float quantityHigiene = 0f;
@@ -169,7 +192,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         for(ProductData p : productDatas){
             totalValue += p.getQuantity() * p.getPrice();
             totalProduct += p.getQuantity();
-            switch (p.getProduct().getNameCategory()){
+            switch (namesCategoryAux.get(i++)){
                 case Product.ALIMENTO:
                     quantityAlimentos += p.getQuantity();
                     break;
@@ -220,17 +243,26 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         }
     }
 
-    private void setSave(ProductData productData, int quantity, TextView textView_total_price_product, TextView textView_unit_price_product, TextView textView_unit, ImageView imageView){
+    private void setSave(
+            ProductData productData,
+            int quantity,
+            ArrayList<String> namesCategoryAux,
+            TextView textView_total_price_product,
+            TextView textView_unit_price_product,
+            TextView textView_unit,
+            ImageView imageView){
+
         if (quantity >= 0){
             productData.setQuantity(quantity);
             DataManager.getInstance().getProductDataDAO().save(productData);
-            setQuantityAndTotalMoney(productDatas);
+            setQuantityAndTotalMoney(productDatas, namesCategoryAux);
             String total_price = String.valueOf(productData.getQuantity() * productData.getPrice());
             textView_total_price_product.setText(Helpers.getMonetary(total_price));
             textView_unit_price_product.setText(Helpers.getMonetary(productData.getPrice().toString()));
             textView_unit.setText(String.valueOf(productData.getQuantity()));
             imageView.setImageDrawable(getImageCategory(productData));
         }
+
     }
 
     private Drawable getImageCategory(ProductData productData){

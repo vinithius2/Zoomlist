@@ -28,6 +28,7 @@
     <string name="porcent_zero">% 0.0</string>
     <string name="zero">0</string>
     <string name="os_alimentos_equivalem_a">Os alimentos equivalem a </string>
+    <string name="info_edit_delete">Arraste o item para esquerda ou direita para editar e deletar.</string>
     <string name="as_bebidas_equivalem_a">As bebidas equivalem a </string>
     <string name="os_materiais_de_higiene_equivalem_a">Os materias de higiene pessoal equivalem a </string>
     <string name="os_materiais_de_limpeza_equivalem_a">Os materiais de limpeza equivalem a </string>

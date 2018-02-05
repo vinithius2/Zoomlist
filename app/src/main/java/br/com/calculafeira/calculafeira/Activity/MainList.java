@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -153,6 +154,14 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
             public void onClick(View view) {
                 Intent intent = new Intent(MainList.this, ProductCreateEdit.class);
                 startActivity(intent);
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Snackbar.make(view, getResources().getString(R.string.info_edit_delete), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
             }
         });
 
