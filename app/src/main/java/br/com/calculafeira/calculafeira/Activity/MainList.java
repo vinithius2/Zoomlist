@@ -40,16 +40,15 @@ import br.com.calculafeira.calculafeira.Util.Helpers;
 
 public class MainList extends AppCompatActivity implements AbsListView.OnScrollListener {
 
-    Toolbar mToolbar;
-    View mContainerHeader;
-    FloatingActionButton fab;
-    ObjectAnimator fade;
-    TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida,
-            porcentHigiene, porcentLimpeza, estimate, textViewWhereProduct;
-    TableRow tableRowAlimento, tableRowBebida, tableRowHigiene, tableRowLimpeza;
-    LinearLayout linearLayoutPorcent;
-    ListView listView;
-
+    private Toolbar mToolbar;
+    private View mContainerHeader;
+    private FloatingActionButton fab;
+    private ObjectAnimator fade;
+    private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida,
+            porcentHigiene, porcentLimpeza, estimate;
+    private TableRow tableRowAlimento, tableRowBebida, tableRowHigiene, tableRowLimpeza;
+    private LinearLayout linearLayoutPorcent;
+    private ListView listView;
     private Context context = this;
 
     @Override
@@ -61,44 +60,27 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         } catch (Exception e) {
             Log.e("ERRO", e.getMessage());
         }
+        setInitialization();
+        getOnLongClickTableRow();
 
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        listView = (ListView) findViewById(R.id.listview);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainList.this, ProductCreateEdit.class);
+                startActivity(intent);
+            }
+        });
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Snackbar.make(view, getResources().getString(R.string.info_edit_delete), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return false;
+            }
+        });
+    }
 
-        if (mToolbar != null) {
-            setSupportActionBar(mToolbar);
-            totalPrice = (TextView) mToolbar.findViewById(R.id.textView_total_price);
-            totalQuantity = (TextView) mToolbar.findViewById(R.id.textView_total_quantity);
-            porcentAlimento = (TextView) mToolbar.findViewById(R.id.textView_porcent_alimento);
-            porcentBebida = (TextView) mToolbar.findViewById(R.id.textView_porcent_bebida);
-            porcentHigiene = (TextView) mToolbar.findViewById(R.id.textView_porcent_higiene);
-            porcentLimpeza = (TextView) mToolbar.findViewById(R.id.textView_porcent_limpeza);
-            estimate = (TextView) mToolbar.findViewById(R.id.textView_estimate);
-            tableRowAlimento = (TableRow) mToolbar.findViewById(R.id.tableRow_alimento);
-            tableRowBebida = (TableRow) mToolbar.findViewById(R.id.tableRow_bebidas);
-            tableRowHigiene = (TableRow) mToolbar.findViewById(R.id.tableRow_higiene);
-            tableRowLimpeza = (TableRow) mToolbar.findViewById(R.id.tableRow_limpeza);
-            linearLayoutPorcent = (LinearLayout) mToolbar.findViewById(R.id.LinearLayoutPorcent);
-        }
-
-        // Inflate the header view and attach it to the ListView
-        View headerView = LayoutInflater.from(this).inflate(R.layout.header_main_list, listView, false);
-        mContainerHeader = headerView.findViewById(R.id.container);
-        listView.addHeaderView(headerView);
-
-        totalPrice = (TextView) headerView.findViewById(R.id.textView_total_price);
-        totalQuantity = (TextView) headerView.findViewById(R.id.textView_total_quantity);
-        porcentAlimento = (TextView) headerView.findViewById(R.id.textView_porcent_alimento);
-        porcentBebida = (TextView) headerView.findViewById(R.id.textView_porcent_bebida);
-        porcentHigiene = (TextView) headerView.findViewById(R.id.textView_porcent_higiene);
-        porcentLimpeza = (TextView) headerView.findViewById(R.id.textView_porcent_limpeza);
-        estimate = (TextView) headerView.findViewById(R.id.textView_estimate);
-        tableRowAlimento = (TableRow) headerView.findViewById(R.id.tableRow_alimento);
-        tableRowBebida = (TableRow) headerView.findViewById(R.id.tableRow_bebidas);
-        tableRowHigiene = (TableRow) headerView.findViewById(R.id.tableRow_higiene);
-        tableRowLimpeza = (TableRow) headerView.findViewById(R.id.tableRow_limpeza);
-        linearLayoutPorcent = (LinearLayout) headerView.findViewById(R.id.LinearLayoutPorcent);
-
+    private void getOnLongClickTableRow(){
         tableRowAlimento.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -139,38 +121,11 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
                 return false;
             }
         });
-
-        // prepare the fade in/out animator
-        fade = ObjectAnimator.ofFloat(mContainerHeader, "alpha", 0f, 1f);
-        fade.setInterpolator(new DecelerateInterpolator());
-        fade.setDuration(400);
-
-        listView.setOnScrollListener(this);
-        populaAdapter();
-
-        fab = (FloatingActionButton) findViewById(R.id.add_product);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainList.this, ProductCreateEdit.class);
-                startActivity(intent);
-            }
-        });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Snackbar.make(view, getResources().getString(R.string.info_edit_delete), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                return false;
-            }
-        });
-
-        setConfig();
     }
 
     private void populaAdapter(){
         ArrayAdapter<ProductData> productDataAdapter = new AdapterProductData(
-                this,
+                context,
                 R.layout.adapter_product_data,
                 DataManager.getInstance().getProductDataDAO().getListProductDatas(),
                 totalPrice,
@@ -205,6 +160,114 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         if(!value03){
             linearLayoutPorcent.setVisibility(View.GONE);
         }
+    }
+
+    private void setInitialization(){
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        listView = (ListView) findViewById(R.id.listview);
+
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
+            totalPrice = mToolbar.findViewById(R.id.textView_total_price);
+            totalQuantity = mToolbar.findViewById(R.id.textView_total_quantity);
+            porcentAlimento = mToolbar.findViewById(R.id.textView_porcent_alimento);
+            porcentBebida = mToolbar.findViewById(R.id.textView_porcent_bebida);
+            porcentHigiene = mToolbar.findViewById(R.id.textView_porcent_higiene);
+            porcentLimpeza = mToolbar.findViewById(R.id.textView_porcent_limpeza);
+            estimate = mToolbar.findViewById(R.id.textView_estimate);
+            tableRowAlimento = mToolbar.findViewById(R.id.tableRow_alimento);
+            tableRowBebida = mToolbar.findViewById(R.id.tableRow_bebidas);
+            tableRowHigiene = mToolbar.findViewById(R.id.tableRow_higiene);
+            tableRowLimpeza = mToolbar.findViewById(R.id.tableRow_limpeza);
+            linearLayoutPorcent = mToolbar.findViewById(R.id.LinearLayoutPorcent);
+        }
+
+        // Inflate the header view and attach it to the ListView
+        View headerView = LayoutInflater.from(this).inflate(R.layout.header_main_list, listView, false);
+        mContainerHeader = headerView.findViewById(R.id.container);
+        listView.addHeaderView(headerView);
+
+        totalPrice = headerView.findViewById(R.id.textView_total_price);
+        totalQuantity = headerView.findViewById(R.id.textView_total_quantity);
+        porcentAlimento = headerView.findViewById(R.id.textView_porcent_alimento);
+        porcentBebida = headerView.findViewById(R.id.textView_porcent_bebida);
+        porcentHigiene = headerView.findViewById(R.id.textView_porcent_higiene);
+        porcentLimpeza = headerView.findViewById(R.id.textView_porcent_limpeza);
+        estimate = headerView.findViewById(R.id.textView_estimate);
+        tableRowAlimento = headerView.findViewById(R.id.tableRow_alimento);
+        tableRowBebida = headerView.findViewById(R.id.tableRow_bebidas);
+        tableRowHigiene = headerView.findViewById(R.id.tableRow_higiene);
+        tableRowLimpeza = headerView.findViewById(R.id.tableRow_limpeza);
+        linearLayoutPorcent = headerView.findViewById(R.id.LinearLayoutPorcent);
+
+        fab = (FloatingActionButton) findViewById(R.id.add_product);
+
+        fade = ObjectAnimator.ofFloat(mContainerHeader, "alpha", 0f, 1f);
+        fade.setInterpolator(new DecelerateInterpolator());
+        fade.setDuration(400);
+
+        listView.setOnScrollListener(this);
+        populaAdapter();
+        setConfig();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu m) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_lista_principal, m);
+        return super.onCreateOptionsMenu(m);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch (id){
+            case R.id.action_delete:
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(getResources().getString(R.string.list_delete));
+                builder.setCancelable(true);
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        for (ProductData p : DataManager.getInstance().getProductDataDAO().getListProductDatas()) {
+                            DataManager.getInstance().getProductDataDAO().delete(p);
+                        }
+                        Helpers.setAtualizarDadosInicial(context, totalPrice, porcentAlimento, porcentBebida,
+                                porcentHigiene, porcentLimpeza, totalQuantity, estimate, mToolbar);
+                        populaAdapter();
+                    }
+                });
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+                break;
+            case R.id.action_estimate:
+                Intent intent = new Intent(MainList.this, ConfigActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_about:
+                FragmentTransaction ftc = getFragmentManager().beginTransaction();
+                DialogFragmentConfig dialogFragmentConfig = new DialogFragmentConfig();
+                dialogFragmentConfig.show(ftc, getResources().getString(R.string.action_settings));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -274,13 +337,6 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu m) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_lista_principal, m);
-        return super.onCreateOptionsMenu(m);
-    }
-
     /**
      * Convert Dps into Pxs
      *
@@ -299,57 +355,5 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
      */
     public static boolean isLollipop() {
         return android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        switch (id){
-            case R.id.action_delete:
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setMessage(getResources().getString(R.string.list_delete));
-                builder.setCancelable(true);
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        for (ProductData p : DataManager.getInstance().getProductDataDAO().getListProductDatas()) {
-                            DataManager.getInstance().getProductDataDAO().delete(p);
-                        }
-                        Helpers.setAtualizarDadosInicial(context, totalPrice, porcentAlimento, porcentBebida,
-                                porcentHigiene, porcentLimpeza, totalQuantity, estimate, mToolbar);
-                        populaAdapter();
-                    }
-                });
-                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-                break;
-            case R.id.action_estimate:
-                Intent intent = new Intent(MainList.this, ConfigActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.action_about:
-                FragmentTransaction ftc = getFragmentManager().beginTransaction();
-                DialogFragmentConfig dialogFragmentConfig = new DialogFragmentConfig();
-                dialogFragmentConfig.show(ftc, "Configuração");
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
     }
 }

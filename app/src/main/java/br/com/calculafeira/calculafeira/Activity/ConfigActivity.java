@@ -30,8 +30,10 @@ public class ConfigActivity extends AppCompatActivity {
     private static final String CHECK_BOX_PORCENT = "checkBoxPorcent";
     private CheckBox checkBoxEstimate, checkBoxQuantity, checkBoxPorcent;
     private SharedPreferences mySharedPreferences;
+    private FloatingActionButton fab;
     private EditText editTextEstimate;
     private Context context = this;
+    private String monetarySymbol;
     private String current = "";
 
     @Override
@@ -39,21 +41,16 @@ public class ConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setInitialization();
         setSupportActionBar(toolbar);
-        editTextEstimate = (EditText)findViewById(R.id.edit_text_estimate);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
-        editTextEstimate.setText(Helpers.getMonetary("000"));
-        if (!mySharedPreferences.getString("estimate", "").isEmpty()){
-            editTextEstimate.setText(Helpers.getMonetary(String.valueOf(
-                    Double.parseDouble(mySharedPreferences.getString("estimate", ""))
-            )));
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        checkBoxEstimate = (CheckBox)findViewById(R.id.checkBoxEstimate);
-        checkBoxPorcent = (CheckBox)findViewById(R.id.checkBoxPorcent);
-        checkBoxQuantity = (CheckBox)findViewById(R.id.checkBoxQuantity);
-        atualizarCheckBoxs(checkBoxEstimate, checkBoxQuantity, checkBoxPorcent);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         editTextEstimate.addTextChangedListener(new TextWatcher() {
             @Override
@@ -70,18 +67,12 @@ public class ConfigActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if(!s.toString().equals(current)){
                     editTextEstimate.removeTextChangedListener(this);
-
-                    String monetarySymbol = Helpers.getCurrencySymbol(Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode());
                     String cleanString = s.toString().replaceAll("[" + monetarySymbol + ",.]", "");
-                    cleanString = Helpers.getClearBlank(cleanString);
-
-                    double parsed = Double.parseDouble(cleanString);
+                    double parsed = Double.parseDouble(Helpers.getClearBlank(cleanString));
                     String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-
                     current = formatted;
                     editTextEstimate.setText(formatted);
                     editTextEstimate.setSelection(formatted.length());
-
                     editTextEstimate.addTextChangedListener(this);
                 }
             }
@@ -92,11 +83,7 @@ public class ConfigActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String value = editTextEstimate.getText().toString();
                 if (!Objects.equals(value, "")){
-                    mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = mySharedPreferences.edit();
-                    String monetarySymbol = Helpers.getCurrencySymbol(
-                            Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode()
-                    );
 
                     String cleanString = Helpers.getClearBlank(
                             value.replaceAll("[" + monetarySymbol + ",.]", "")
@@ -114,16 +101,38 @@ public class ConfigActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void addValueCheckBox(String nameCheckBox, View v){
+        mySharedPreferences = context.getSharedPreferences(nameCheckBox, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editorCheckBox = mySharedPreferences.edit();
+        if (((CheckBox) v).isChecked()) {
+            editorCheckBox.putBoolean(nameCheckBox, true);
+            editorCheckBox.apply();
+        } else {
+            editorCheckBox.putBoolean(nameCheckBox, false);
+            editorCheckBox.apply();
+        }
+    }
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+    private void setInitialization(){
+        monetarySymbol = Helpers.getCurrencySymbol(
+                Currency.getInstance(getResources().getConfiguration().locale).getCurrencyCode()
+        );
+        editTextEstimate = (EditText)findViewById(R.id.edit_text_estimate);
+        editTextEstimate.setText(Helpers.getMonetary("000"));
+        mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
+        if (!mySharedPreferences.getString("estimate", "").isEmpty()){
+            editTextEstimate.setText(Helpers.getMonetary(String.valueOf(
+                    Double.parseDouble(mySharedPreferences.getString("estimate", "000"))
+            )));
+        }
+        editTextEstimate.setSelection(editTextEstimate.getText().length());
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        checkBoxEstimate = (CheckBox)findViewById(R.id.checkBoxEstimate);
+        checkBoxPorcent = (CheckBox)findViewById(R.id.checkBoxPorcent);
+        checkBoxQuantity = (CheckBox)findViewById(R.id.checkBoxQuantity);
+        atualizarCheckBoxs(checkBoxEstimate, checkBoxQuantity, checkBoxPorcent);
     }
 
     private void atualizarCheckBoxs(CheckBox checkBoxEstimate, CheckBox checkBoxQuantity, CheckBox checkBoxPorcent){
@@ -138,18 +147,6 @@ public class ConfigActivity extends AppCompatActivity {
         mySharedPreferences = context.getSharedPreferences("checkBoxPorcent", Context.MODE_PRIVATE);
         Boolean value03 = mySharedPreferences.getBoolean("checkBoxPorcent", true);
         checkBoxPorcent.setChecked(value03);
-    }
-
-    private void addValueCheckBox(String nameCheckBox, View v){
-        mySharedPreferences = context.getSharedPreferences(nameCheckBox, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = mySharedPreferences.edit();
-        if (((CheckBox) v).isChecked()) {
-            editor.putBoolean(nameCheckBox, true);
-            editor.apply();
-        } else {
-            editor.putBoolean(nameCheckBox, false);
-            editor.apply();
-        }
     }
 
     public void onBackPressed() {
