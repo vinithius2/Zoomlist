@@ -3,6 +3,7 @@ package br.com.calculafeira.calculafeira.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
 
     private final int resourceId;
     private Double totalValue;
+    private SharedPreferences mySharedPreferences;
     private ArrayList<ProductData> productDatas;
     private Context context;
     private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida, porcentHigiene,
@@ -71,7 +73,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         this.estimate = estimate;
         this.context = context;
         this.mToolbar = mToolbar;
-        namesCategoryAux = getNamesCategory(productDatas);
+        namesCategoryAux = getNamesCategory();
         setQuantityAndTotalMoney(productDatas, namesCategoryAux);
     }
 
@@ -80,20 +82,23 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(resourceId, parent, false);
         }
+
         final ProductData productData = productDatas.get(position);
-        final ImageButton imageButtonEdit = (ImageButton) convertView.findViewById(R.id.btn_edit);
-        final ImageButton imageButtonDelete = (ImageButton) convertView.findViewById(R.id.btn_delete);
-        final SwipeLayout swipeLayout =  (SwipeLayout) convertView.findViewById(R.id.swipeLayout);
-        final TextView textView_name_product = (TextView) convertView.findViewById(R.id.textView_name_product_adapter);
-        final TextView textView_total_price_product = (TextView) convertView.findViewById(R.id.textView_total_price_product_adapter);
-        final TextView textView_unit_price_product = (TextView) convertView.findViewById(R.id.textView_unit_price_product_adapter);
-        final TextView textView_unit = (TextView) convertView.findViewById(R.id.textView_unit);
-        final ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView_icon_category);
+        final ImageButton imageButtonEdit = convertView.findViewById(R.id.btn_edit);
+        final ImageButton imageButtonDelete = convertView.findViewById(R.id.btn_delete);
+        final SwipeLayout swipeLayout = convertView.findViewById(R.id.swipeLayout);
+        final TextView textView_name_product = convertView.findViewById(R.id.textView_name_product_adapter);
+        final TextView textView_total_price_product = convertView.findViewById(R.id.textView_total_price_product_adapter);
+        final TextView textView_unit_price_product = convertView.findViewById(R.id.textView_unit_price_product_adapter);
+        final TextView textView_unit = convertView.findViewById(R.id.textView_unit);
+        final ImageView imageView = convertView.findViewById(R.id.imageView_icon_category);
+        CircleButton buttonMais = convertView.findViewById(R.id.button_mais);
+        CircleButton buttonMenos = convertView.findViewById(R.id.button_menos);
+        textView_name_product.setText(productData.toString());
+
         swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
         swipeLayout.addDrag(SwipeLayout.DragEdge.Left, convertView.findViewById(R.id.bottom_wrapper));
-        CircleButton buttonMais = (CircleButton) convertView.findViewById(R.id.button_mais);
-        CircleButton buttonMenos = (CircleButton) convertView.findViewById(R.id.button_menos);
-        textView_name_product.setText(productData.toString());
+
         setSave(productData,
                 productData.getQuantity(),
                 namesCategoryAux,
@@ -173,7 +178,7 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
         return convertView;
     }
 
-    private ArrayList<String> getNamesCategory(ArrayList<ProductData> productData){
+    private ArrayList<String> getNamesCategory(){
         ArrayList<String> namesCategory = new ArrayList<String>();
         for(ProductData p : productDatas){
             namesCategory.add(p.getProduct().getNameCategory());
@@ -207,7 +212,11 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
                     break;
             }
         }
-        mToolbar.setTitle(Helpers.getMonetary(String.valueOf(totalValue)));
+        mySharedPreferences = context.getSharedPreferences("titleHeader", Context.MODE_PRIVATE);
+        Boolean value = mySharedPreferences.getBoolean("titleHeader", true);
+        if(value){
+            mToolbar.setTitle(Helpers.getMonetary(String.valueOf(totalValue)));
+        }
         totalPrice.setText(Helpers.getMonetary(String.valueOf(totalValue)));
         DecimalFormat df = new DecimalFormat("0.0");
         if (totalProduct != 0){
@@ -216,10 +225,10 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
             porcentHigiene.setText(df.format(quantityHigiene*100/totalProduct) + "%");
             porcentLimpeza.setText(df.format(quantityLimpeza*100/totalProduct) + "%");
         } else {
-            porcentAlimento.setText("0.0%");
-            porcentBebida.setText("0.0%");
-            porcentHigiene.setText("0.0%");
-            porcentLimpeza.setText("0.0%");
+            porcentAlimento.setText(context.getResources().getText(R.string.porcent_zero));
+            porcentBebida.setText(context.getResources().getText(R.string.porcent_zero));
+            porcentHigiene.setText(context.getResources().getText(R.string.porcent_zero));
+            porcentLimpeza.setText(context.getResources().getText(R.string.porcent_zero));
         }
         String result = context.getResources().getString(R.string.no_products);
         if (totalProduct == 1) {
@@ -262,7 +271,6 @@ public class AdapterProductData extends ArrayAdapter<ProductData> {
             textView_unit.setText(String.valueOf(productData.getQuantity()));
             imageView.setImageDrawable(getImageCategory(productData));
         }
-
     }
 
     private Drawable getImageCategory(ProductData productData){

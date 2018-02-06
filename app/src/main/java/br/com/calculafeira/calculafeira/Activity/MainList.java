@@ -43,10 +43,10 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
     private Toolbar mToolbar;
     private View mContainerHeader;
     private FloatingActionButton fab;
+    private SharedPreferences mySharedPreferences;
     private ObjectAnimator fade;
     private TextView totalPrice, totalQuantity, porcentAlimento, porcentBebida,
             porcentHigiene, porcentLimpeza, estimate;
-    private TableRow tableRowAlimento, tableRowBebida, tableRowHigiene, tableRowLimpeza;
     private LinearLayout linearLayoutPorcent;
     private ListView listView;
     private Context context = this;
@@ -61,7 +61,6 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
             Log.e("ERRO", e.getMessage());
         }
         setInitialization();
-        getOnLongClickTableRow();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,49 +73,6 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Snackbar.make(view, getResources().getString(R.string.info_edit_delete), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                return false;
-            }
-        });
-    }
-
-    private void getOnLongClickTableRow(){
-        tableRowAlimento.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Snackbar.make(v, getResources().getString(R.string.os_alimentos_equivalem_a)
-                        + " " + porcentAlimento.getText().toString()
-                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                return false;
-            }
-        });
-        tableRowBebida.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Snackbar.make(v, getResources().getString(R.string.as_bebidas_equivalem_a)
-                        + " " + porcentBebida.getText().toString()
-                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                return false;
-            }
-        });
-        tableRowHigiene.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Snackbar.make(v, getResources().getString(R.string.os_materiais_de_higiene_equivalem_a)
-                        + " " + porcentHigiene.getText().toString()
-                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                return false;
-            }
-        });
-        tableRowLimpeza.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Snackbar.make(v, getResources().getString(R.string.os_materiais_de_limpeza_equivalem_a)
-                        + " " + porcentLimpeza.getText().toString()
-                        + " " + getResources().getString(R.string.de_suas_compras), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 return false;
             }
@@ -175,10 +131,6 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
             porcentHigiene = mToolbar.findViewById(R.id.textView_porcent_higiene);
             porcentLimpeza = mToolbar.findViewById(R.id.textView_porcent_limpeza);
             estimate = mToolbar.findViewById(R.id.textView_estimate);
-            tableRowAlimento = mToolbar.findViewById(R.id.tableRow_alimento);
-            tableRowBebida = mToolbar.findViewById(R.id.tableRow_bebidas);
-            tableRowHigiene = mToolbar.findViewById(R.id.tableRow_higiene);
-            tableRowLimpeza = mToolbar.findViewById(R.id.tableRow_limpeza);
             linearLayoutPorcent = mToolbar.findViewById(R.id.LinearLayoutPorcent);
         }
 
@@ -194,10 +146,6 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
         porcentHigiene = headerView.findViewById(R.id.textView_porcent_higiene);
         porcentLimpeza = headerView.findViewById(R.id.textView_porcent_limpeza);
         estimate = headerView.findViewById(R.id.textView_estimate);
-        tableRowAlimento = headerView.findViewById(R.id.tableRow_alimento);
-        tableRowBebida = headerView.findViewById(R.id.tableRow_bebidas);
-        tableRowHigiene = headerView.findViewById(R.id.tableRow_higiene);
-        tableRowLimpeza = headerView.findViewById(R.id.tableRow_limpeza);
         linearLayoutPorcent = headerView.findViewById(R.id.LinearLayoutPorcent);
 
         fab = (FloatingActionButton) findViewById(R.id.add_product);
@@ -298,8 +246,16 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
             // if we scrolled more than 16dps, we hide the content and display the title
             if (view.getChildAt(0).getTop() < -dpToPx(16)) {
                 toggleHeader(false, false);
+                mySharedPreferences = context.getSharedPreferences("titleHeader", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mySharedPreferences.edit();
+                editor.putBoolean("titleHeader", true);
+                editor.apply();
             } else {
                 toggleHeader(true, true);
+                mySharedPreferences = context.getSharedPreferences("titleHeader", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mySharedPreferences.edit();
+                editor.putBoolean("titleHeader", false);
+                editor.apply();
             }
         } else {
             toggleHeader(false, false);
