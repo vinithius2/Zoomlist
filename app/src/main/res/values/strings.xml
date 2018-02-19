@@ -25,7 +25,7 @@
     <string name="bebida">Bebida</string>
     <string name="limpeza">Limpeza</string>
     <string name="higiene">Higiene</string>
-    <string name="porcent_zero">% 0.0</string>
+    <string name="porcent_zero">0.0%</string>
     <string name="zero">0</string>
     <string name="os_alimentos_equivalem_a">Os alimentos equivalem a </string>
     <string name="info_edit_delete">Arraste o item para esquerda ou direita para editar e deletar.</string>
