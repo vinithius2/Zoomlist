@@ -83,6 +83,7 @@ public class ConfigActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String value = editTextEstimate.getText().toString();
                 if (!Objects.equals(value, "")){
+                    mySharedPreferences = context.getSharedPreferences("estimate", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = mySharedPreferences.edit();
 
                     String cleanString = Helpers.getClearBlank(

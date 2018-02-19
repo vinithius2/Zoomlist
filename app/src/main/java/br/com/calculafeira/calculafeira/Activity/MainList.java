@@ -97,7 +97,6 @@ public class MainList extends AppCompatActivity implements AbsListView.OnScrollL
     }
 
     private void setConfig(){
-        SharedPreferences mySharedPreferences;
         mySharedPreferences = context.getSharedPreferences("checkBoxEstimate", Context.MODE_PRIVATE);
         Boolean value01 = mySharedPreferences.getBoolean("checkBoxEstimate", true);
         estimate.setVisibility(View.VISIBLE);
