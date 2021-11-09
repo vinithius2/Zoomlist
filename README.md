@@ -1,7 +1,9 @@
 # Aplicativo Zoomlist
 ### Google Play: https://play.google.com/store/apps/details?id=br.com.calculafeira.calculafeira
 
-O aplicativo Zoomlist foi desenvolvido depois da necessidade de encontrar Apps que dessem total assistência nas compras que são feitas em supermercados, o App não se limita a uma calculadora, ele gerência e te retorna todo o feedback possível do que você tem no seu carrinho.
+_**PT:**_ O aplicativo Zoomlist foi desenvolvido depois da necessidade de encontrar Apps que dessem total assistência nas compras que são feitas em supermercados, o App não se limita a uma calculadora, ele gerência e te retorna todo o feedback possível do que você tem no seu carrinho.
+
+_**ENG:**_ The Zoomlist app was developed after the need to find Apps that give total assistance in purchases that are made in supermarkets, the App is not limited to a calculator, it manages and returns all possible feedback about what you have in your cart. 
 
 ![image01](https://camo.githubusercontent.com/85feadc1edb7f8083d5c84e1318698e9d37e33f29e554719f039eb7f2dcdac10/68747470733a2f2f706c61792d6c682e676f6f676c6575736572636f6e74656e742e636f6d2f663255574c655f5a696b734e702d5267703669636354324d4763536e696e6f7671334f7a6e74446442644f7a417831374b694a4b7467322d6b796e437849675a6f513d77313336362d683632352d7277)
 
